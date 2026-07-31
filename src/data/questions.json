@@ -1,0 +1,377 @@
+[
+  {
+    "id": 0,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What does trust mean to you in a relationship?"
+  },
+  {
+    "id": 1,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "How do you handle it when someone lets you down?"
+  },
+  {
+    "id": 2,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's something you've never told me about your childhood that shaped who you are today?"
+  },
+  {
+    "id": 3,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "When do you feel most vulnerable, and how do you handle those feelings?"
+  },
+  {
+    "id": 4,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's a fear you have about relationships in general?"
+  },
+  {
+    "id": 5,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "How do you know when you truly trust someone?"
+  },
+  {
+    "id": 6,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's something you're working on about yourself right now?"
+  },
+  {
+    "id": 7,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "How do you want a partner to support you when you're going through something difficult?"
+  },
+  {
+    "id": 8,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's a mistake you made that taught you something important about yourself?"
+  },
+  {
+    "id": 9,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "How do you process emotions when you're upset?"
+  },
+  {
+    "id": 10,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What does emotional safety look like to you?"
+  },
+  {
+    "id": 11,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's one thing you wish people understood better about you?"
+  },
+  {
+    "id": 12,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "How do you handle stress, and what helps you feel better?"
+  },
+  {
+    "id": 13,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What's something from your past that you worry might affect future relationships?"
+  },
+  {
+    "id": 14,
+    "category": "Questions to Strengthen Trust and Vulnerability",
+    "question": "What does forgiveness mean to you?"
+  },
+  {
+    "id": 15,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What does your ideal life look like in five years?"
+  },
+  {
+    "id": 16,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What's a dream you've had since childhood that you still think about?"
+  },
+  {
+    "id": 17,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "How important is career advancement to you, and how do you balance that with relationships?"
+  },
+  {
+    "id": 18,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What role do you want family to play in your future?"
+  },
+  {
+    "id": 19,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What kind of home environment makes you feel most peaceful?"
+  },
+  {
+    "id": 20,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "How do you picture an ideal relationship when both people are older and retired?"
+  },
+  {
+    "id": 21,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What does financial security mean to you?"
+  },
+  {
+    "id": 22,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What are your non-negotiables when it comes to where you live?"
+  },
+  {
+    "id": 23,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "How do you want to grow as a person in the coming years?"
+  },
+  {
+    "id": 24,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What causes or issues do you feel passionate about?"
+  },
+  {
+    "id": 25,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What's an adventure you'd love to take with the right person?"
+  },
+  {
+    "id": 26,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "How do you envision balancing individual goals with couple goals?"
+  },
+  {
+    "id": 27,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What traditions from your family do you want to keep or change?"
+  },
+  {
+    "id": 28,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "What does \"partnership\" mean to you in a relationship?"
+  },
+  {
+    "id": 29,
+    "category": "Questions to Explore Shared Dreams and Goals",
+    "question": "How do you want to handle major life decisions as a couple?"
+  },
+  {
+    "id": 30,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's the most important lesson life has taught you so far?"
+  },
+  {
+    "id": 31,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "How have your priorities changed in the past few years?"
+  },
+  {
+    "id": 32,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's a belief you used to hold that you've since reconsidered?"
+  },
+  {
+    "id": 33,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What role does personal development play in your life?"
+  },
+  {
+    "id": 34,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's your biggest strength, and how did you develop it?"
+  },
+  {
+    "id": 35,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's an area where you want to continue growing?"
+  },
+  {
+    "id": 36,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What makes you feel most alive and authentic?"
+  },
+  {
+    "id": 37,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "How do you define success for yourself?"
+  },
+  {
+    "id": 38,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's a value you learned from your family that you want to keep?"
+  },
+  {
+    "id": 39,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's a pattern from your family that you want to change?"
+  },
+  {
+    "id": 40,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "How do you handle it when your values conflict with someone else's?"
+  },
+  {
+    "id": 41,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What does spirituality or deeper purpose mean to you?"
+  },
+  {
+    "id": 42,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "How do you want to be remembered by the people who matter most to you?"
+  },
+  {
+    "id": 43,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "What's something you're working on improving about yourself?"
+  },
+  {
+    "id": 44,
+    "category": "Questions Around Personal Growth and Values",
+    "question": "How do you want a relationship to support your personal growth?"
+  },
+  {
+    "id": 45,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you feel most loved and appreciated?"
+  },
+  {
+    "id": 46,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What's your favourite way to show love to someone special?"
+  },
+  {
+    "id": 47,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What's a small gesture that always makes you feel cared for?"
+  },
+  {
+    "id": 48,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you like to be comforted when you're having a hard time?"
+  },
+  {
+    "id": 49,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What's your favourite memory of feeling deeply loved?"
+  },
+  {
+    "id": 50,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you prefer to handle disagreements in relationships?"
+  },
+  {
+    "id": 51,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What kind of physical affection feels most natural to you?"
+  },
+  {
+    "id": 52,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you like to celebrate special occasions and milestones?"
+  },
+  {
+    "id": 53,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What does quality time mean to you in a relationship?"
+  },
+  {
+    "id": 54,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you prefer to give and receive feedback?"
+  },
+  {
+    "id": 55,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What's something that instantly makes you feel disconnected from someone?"
+  },
+  {
+    "id": 56,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you show someone you're thinking about them?"
+  },
+  {
+    "id": 57,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What helps you feel most supported during stressful times?"
+  },
+  {
+    "id": 58,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "How do you like to reconnect after time apart?"
+  },
+  {
+    "id": 59,
+    "category": "Questions About Expressing and Receiving Love",
+    "question": "What does \"being there\" for someone look like to you?"
+  },
+  {
+    "id": 60,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How did your family handle conflict when you were growing up?"
+  },
+  {
+    "id": 61,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What's your first instinct when you feel criticised or misunderstood?"
+  },
+  {
+    "id": 62,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you want someone to approach you when they're upset about something?"
+  },
+  {
+    "id": 63,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What helps you calm down when you're angry or frustrated?"
+  },
+  {
+    "id": 64,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What does a sincere apology look like to you?"
+  },
+  {
+    "id": 65,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you handle it when you and someone you care about see things differently?"
+  },
+  {
+    "id": 66,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What's your biggest relationship fear?"
+  },
+  {
+    "id": 67,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you want to handle disagreements about important decisions?"
+  },
+  {
+    "id": 68,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What's your process for working through hurt feelings?"
+  },
+  {
+    "id": 69,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you prefer to resolve conflicts-talking it out immediately or taking time to think first?"
+  },
+  {
+    "id": 70,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What would make you feel safe enough to be completely honest about difficult topics?"
+  },
+  {
+    "id": 71,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you want a partner to support you during your worst times?"
+  },
+  {
+    "id": 72,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What's something that would help you feel more understood in a relationship?"
+  },
+  {
+    "id": 73,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "How do you repair after an argument?"
+  },
+  {
+    "id": 74,
+    "category": "Questions to Navigate Conflict and Difficult Emotions",
+    "question": "What gives you hope about relationships, even when they're challenging?"
+  }
+]
