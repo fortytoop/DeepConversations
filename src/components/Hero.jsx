@@ -8,6 +8,7 @@ export default function Hero() {
           href="https://www.gottman.com/blog/75-insightful-questions-to-deepen-emotional-intimacy/"
           target="_blank"
           rel="noopener noreferrer"
+          title="Read the Gottman Institute article"
         >
           Gottman Institute
         </a>

@@ -4,6 +4,7 @@ import CardArea from "../components/CardArea";
 import CategoryControls from "../components/CategoryControls";
 import Hero from "../components/Hero";
 import SparkPanel from "../components/SparkPanel";
+import Footer from "../components/Footer";
 import { useQuestionDeck } from "../hooks/useQuestionDeck";
 import { useSparkQuestions } from "../hooks/useSparkQuestions";
 
@@ -69,6 +70,8 @@ export default function HomePage() {
         )}
 
         {spark.isOpen && <SparkPanel spark={spark} />}
+
+        <Footer />
       </main>
     </>
   );

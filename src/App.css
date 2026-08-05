@@ -94,7 +94,10 @@ a:focus-visible {
 .app {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
     width: min(760px, 92vw);
+    min-height: 100svh;
     margin: 0 auto;
     padding: 48px 0;
 }
@@ -181,10 +184,11 @@ body.not-found-active #root {
         color 0.18s ease;
 }
 
-.home-button:hover {
+.home-button:hover,
+.home-button:focus-visible {
     transform: translateY(-1px);
-    background: rgba(139, 92, 246, 0.1);
-    color: var(--purple);
+    background: rgba(190, 24, 93, 0.14);
+    color: var(--pink);
 }
 
 
@@ -229,10 +233,11 @@ h1 {
         color 0.18s ease;
 }
 
-.subtitle a:hover {
+.subtitle a:hover,
+.subtitle a:focus-visible {
     transform: translateY(-1px);
-    background: rgba(139, 92, 246, 0.1);
-    color: var(--purple);
+    background: rgba(190, 24, 93, 0.14);
+    color: var(--pink);
 }
 
 /* Category controls */
@@ -837,7 +842,11 @@ h1 {
     }
 
     .card-area {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        column-gap: 10px;
+        row-gap: 32px;
     }
 
     .left-controls,
@@ -853,12 +862,13 @@ h1 {
     }
 
     .card-stack {
+        flex: 0 0 100%;
         order: 1;
     }
 
     .card-nav-buttons {
         display: flex;
-        order: 3;
+        order: 2;
     }
 
     .shuffle-button {
@@ -885,6 +895,61 @@ h1 {
     }
 
     .home-button {
+        transition: none;
+    }
+}
+
+/* Footer */
+.footer {
+    margin-top: auto;
+    padding-top: 48px;
+    color: var(--muted-light);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.footer a {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(190, 24, 93, 0.08);
+    color: var(--pink);
+    text-decoration: none;
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.footer-separator {
+    display: inline-block;
+    transition: opacity 0.05s linear;
+}
+
+.footer-content:has(a:hover) .footer-separator,
+.footer-content:has(a:focus-visible) .footer-separator {
+    opacity: 0;
+}
+
+.footer a:hover,
+.footer a:focus-visible {
+    transform: translateY(-1px);
+    background: rgba(190, 24, 93, 0.14);
+    color: var(--pink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer a,
+    .footer-separator {
         transition: none;
     }
 }
