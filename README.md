@@ -37,7 +37,7 @@ DeepConversations/
 └── vite.config.js
 ```
 
-````markdown
+
 ## Getting Started
 
 ### Prerequisites
@@ -179,9 +179,8 @@ The favicon uses the **“Psychology”** icon by **Kukuh Wachyu Bias**, downloa
 
 The SVG was adapted for use as the project's favicon. No endorsement by the creator or The Noun Project is implied.
 
-## Privacy and Responsible Use
+## Responsible Use
 
-- OpenAI requests are sent through the backend; the API key must never be included in frontend code or committed to Git.
 - This app is intended as a conversation aid, not as therapy, medical advice, or crisis support.
 
 ## License
