@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import { useQuestionDeck } from "../hooks/useQuestionDeck";
 import { useSparkQuestions } from "../hooks/useSparkQuestions";
 
-export default function HomePage() {
+export default function HomePage({ theme }) {
   const deck = useQuestionDeck(questions);
   const spark = useSparkQuestions(deck.currentCard);
 
@@ -34,7 +34,7 @@ export default function HomePage() {
 
   return (
     <>
-      <AnimatingBackground />
+      <AnimatingBackground theme={theme} />
 
       <main className="app">
         <Hero />

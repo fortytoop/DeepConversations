@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { BACKGROUND_ANIMATION_SPEED } from "../constants";
 
 // Draws a soft animated colour field onto the canvas, like a lava lamp
-export default function AnimatingBackground() {
+export default function AnimatingBackground({ theme }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -53,6 +53,14 @@ export default function AnimatingBackground() {
         0.55 * Math.cos(centrePull + delta * 0.7) +
         0.35 * Math.sin(diagonalWave + delta * 0.5);
 
+      if (theme === "dark") {
+        const red = Math.floor(18 + 9 * pinkWave + 4 * peachWave);
+        const green = Math.floor(11 + 3 * peachWave - purpleWave);
+        const blue = Math.floor(26 + 9 * purpleWave + 2 * pinkWave);
+
+        return `rgb(${red}, ${green}, ${blue})`;
+      }
+
       const red = Math.floor(248 + 4 * pinkWave + 4 * peachWave);
       const green = Math.floor(238 + 5 * peachWave - 4 * purpleWave);
       const blue = Math.floor(250 + 4 * purpleWave - 5 * peachWave);
@@ -90,7 +98,7 @@ export default function AnimatingBackground() {
         window.cancelAnimationFrame(animationFrameId);
       }
     };
-  }, []);
+  }, [theme]);
 
   return (
     <canvas

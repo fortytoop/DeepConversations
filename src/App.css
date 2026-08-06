@@ -13,17 +13,109 @@
     --pink: #be185d;
     --pink-dark: #831843;
     --purple: #8b5cf6;
+    --blue: #4285f4;
+    --spark-pink: #ec4899;
+    --orange: #f97316;
+    --yellow: #facc15;
     --spark-spectrum: linear-gradient(
         var(--spark-gradient-angle),
-        #4285f4,
-        #8b5cf6,
-        #ec4899,
-        #f97316,
-        #facc15
+        var(--blue),
+        var(--purple),
+        var(--spark-pink),
+        var(--orange),
+        var(--yellow)
     );
+    --page-background:
+        radial-gradient(circle at top, #fff7ed, transparent 35%),
+        linear-gradient(135deg, #fdf2f8, #eef2ff);
+    --page-overlay:
+        radial-gradient(
+            circle at top,
+            rgba(255, 247, 237, 0.72),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(253, 242, 248, 0.58),
+            rgba(238, 242, 255, 0.66)
+        );
+    --button-bg: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.86);
+    --panel-bg: rgba(255, 255, 255, 0.9);
+    --question-bg: #ffffff;
+    --question-text: #374151;
+    --surface-border: rgba(255, 255, 255, 0.7);
+    --pink-soft: rgba(190, 24, 93, 0.08);
+    --pink-soft-hover: rgba(190, 24, 93, 0.14);
+    --focus-ring: rgba(190, 24, 93, 0.35);
+    --active-foreground: #ffffff;
+    --spark-outline: rgba(139, 92, 246, 0.1);
+    --skeleton-edge: rgba(139, 92, 246, 0.08);
+    --skeleton-middle: rgba(236, 72, 153, 0.18);
     --card-shadow: 0 24px 70px rgba(31, 41, 55, 0.16);
     --button-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
+    --button-hover-shadow: 0 12px 30px rgba(31, 41, 55, 0.12);
+    --panel-shadow: 0 18px 50px rgba(31, 41, 55, 0.12);
     --active-shadow: 0 4px 14px rgba(190, 24, 93, 0.28);
+    --spark-shadow:
+        0 8px 22px rgba(139, 92, 246, 0.2),
+        0 3px 10px rgba(236, 72, 153, 0.1);
+    --spark-hover-shadow:
+        0 11px 27px rgba(139, 92, 246, 0.23),
+        0 5px 16px rgba(236, 72, 153, 0.18);
+    --spark-active-shadow: 0 10px 28px rgba(139, 92, 246, 0.32);
+}
+
+:root[data-theme="dark"] {
+    --text: #f4f0f7;
+    --muted: #aaa2b4;
+    --muted-light: #938a9e;
+    --pink: #dea3bc;
+    --pink-dark: #c97c9f;
+    --purple: #a99bdd;
+    --blue: #9bb0ed;
+    --spark-pink: #dea3bc;
+    --orange: #d89a80;
+    --yellow: #ddc285;
+    --page-background:
+        radial-gradient(circle at top, #2a1727, transparent 36%),
+        linear-gradient(135deg, #0f0d16, #171225);
+    --page-overlay:
+        radial-gradient(
+            circle at top,
+            rgba(122, 54, 89, 0.34),
+            transparent 38%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(15, 13, 22, 0.48),
+            rgba(23, 18, 37, 0.58)
+        );
+    --button-bg: #292233;
+    --card-bg: #211c2b;
+    --panel-bg: #211c2b;
+    --question-bg: #292233;
+    --question-text: #f4f0f7;
+    --surface-border: #40364e;
+    --pink-soft: rgba(201, 124, 159, 0.12);
+    --pink-soft-hover: rgba(201, 124, 159, 0.18);
+    --focus-ring: rgba(169, 155, 221, 0.52);
+    --active-foreground: #211c2b;
+    --spark-outline: rgba(169, 155, 221, 0.2);
+    --skeleton-edge: rgba(169, 155, 221, 0.1);
+    --skeleton-middle: rgba(201, 124, 159, 0.2);
+    --card-shadow: 0 18px 44px rgba(0, 0, 0, 0.32);
+    --button-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    --button-hover-shadow: 0 12px 30px rgba(0, 0, 0, 0.38);
+    --panel-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+    --active-shadow: 0 4px 14px rgba(201, 124, 159, 0.2);
+    --spark-shadow:
+        0 8px 22px rgba(169, 155, 221, 0.14),
+        0 3px 10px rgba(201, 124, 159, 0.08);
+    --spark-hover-shadow:
+        0 11px 27px rgba(169, 155, 221, 0.2),
+        0 5px 16px rgba(201, 124, 159, 0.12);
+    --spark-active-shadow: 0 10px 28px rgba(169, 155, 221, 0.24);
 }
 
 * {
@@ -36,9 +128,10 @@ body {
     overflow-x: hidden;
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
-    background:
-        radial-gradient(circle at top, #fff7ed, transparent 35%),
-        linear-gradient(135deg, #fdf2f8, #eef2ff);
+    background: var(--page-background);
+    transition:
+        color 0.25s ease,
+        background 0.25s ease;
 }
 
 body::before {
@@ -47,24 +140,16 @@ body::before {
     z-index: 0;
     pointer-events: none;
     content: "";
-    background:
-        radial-gradient(
-            circle at top,
-            rgba(255, 247, 237, 0.72),
-            transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(253, 242, 248, 0.58),
-            rgba(238, 242, 255, 0.66)
-        );
+    background: var(--page-overlay);
+    transition: background 0.25s ease;
 }
 
 button {
     border: 0;
     border-radius: 999px;
     padding: 12px 18px;
-    background: #ffffff;
+    background: var(--button-bg);
+    color: var(--text);
     box-shadow: var(--button-shadow);
     cursor: pointer;
     font: inherit;
@@ -80,7 +165,7 @@ button:hover:not(:disabled):not(.pressed-left):not(.pressed-right):not(
         .pressed-up
     ):not(.pressed-down) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(31, 41, 55, 0.12);
+    box-shadow: var(--button-hover-shadow);
 }
 
 button:disabled {
@@ -89,7 +174,7 @@ button:disabled {
 
 button:focus-visible,
 a:focus-visible {
-    outline: 3px solid rgba(190, 24, 93, 0.35);
+    outline: 3px solid var(--focus-ring);
     outline-offset: 3px;
 }
 
@@ -103,6 +188,20 @@ a:focus-visible {
     filter: blur(28px) saturate(0.92);
     opacity: 0.62;
     transform: scale(1.08);
+}
+
+.theme-toggle {
+    position: fixed;
+    top: max(18px, env(safe-area-inset-top));
+    right: max(18px, env(safe-area-inset-right));
+    z-index: 3;
+    display: grid;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    place-items: center;
+    color: var(--pink);
+    font-size: 1.15rem;
 }
 
 .app {
@@ -139,9 +238,9 @@ body.not-found-active #root {
     width: min(620px, 100%);
     margin: 0 auto;
     padding: clamp(36px, 7vw, 64px);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    border: 1px solid var(--surface-border);
     border-radius: 32px;
-    background: rgba(255, 255, 255, 0.86);
+    background: var(--card-bg);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     box-shadow: var(--card-shadow);
@@ -187,7 +286,7 @@ body.not-found-active #root {
     margin-top: 30px;
     padding: 8px 14px;
     border-radius: 999px;
-    background: rgba(190, 24, 93, 0.08);
+    background: var(--pink-soft);
     color: var(--pink);
     font: inherit;
     font-weight: 800;
@@ -201,7 +300,7 @@ body.not-found-active #root {
 .home-button:hover,
 .home-button:focus-visible {
     transform: translateY(-1px);
-    background: rgba(190, 24, 93, 0.14);
+    background: var(--pink-soft-hover);
     color: var(--pink);
 }
 
@@ -237,7 +336,7 @@ h1 {
     align-items: center;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgba(190, 24, 93, 0.08);
+    background: var(--pink-soft);
     color: var(--pink);
     font-weight: 800;
     text-decoration: none;
@@ -250,7 +349,7 @@ h1 {
 .subtitle a:hover,
 .subtitle a:focus-visible {
     transform: translateY(-1px);
-    background: rgba(190, 24, 93, 0.14);
+    background: var(--pink-soft-hover);
     color: var(--pink);
 }
 
@@ -294,7 +393,7 @@ h1 {
     justify-content: center;
     padding: 0 28px;
     border-radius: 999px;
-    background: #ffffff;
+    background: var(--button-bg);
     box-shadow: var(--button-shadow);
     color: var(--pink);
     font-weight: 800;
@@ -330,7 +429,7 @@ h1 {
 .card-nav-buttons button.pressed-up,
 .card-nav-buttons button.pressed-down {
     background: var(--pink);
-    color: #ffffff;
+    color: var(--active-foreground);
     box-shadow: var(--active-shadow);
 }
 
@@ -367,14 +466,14 @@ h1 {
 }
 
 .shuffle-button.active {
-    color: #ffffff;
+    color: var(--active-foreground);
 }
 
 .ai-button,
 .spark-regenerate-button {
     border: 2px solid transparent;
     background:
-        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(var(--button-bg), var(--button-bg)) padding-box,
         var(--spark-spectrum) border-box;
     background-position:
         center,
@@ -382,9 +481,7 @@ h1 {
     background-size:
         100% 100%,
         200% 200%;
-    box-shadow:
-        0 8px 22px rgba(139, 92, 246, 0.2),
-        0 3px 10px rgba(236, 72, 153, 0.1);
+    box-shadow: var(--spark-shadow);
     color: var(--pink-dark);
     transition:
         transform 0.18s ease,
@@ -406,9 +503,7 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     background-position:
         center,
         100% 50%;
-    box-shadow:
-        0 11px 27px rgba(139, 92, 246, 0.23),
-        0 5px 16px rgba(236, 72, 153, 0.18);
+    box-shadow: var(--spark-hover-shadow);
 }
 
 .ai-button {
@@ -430,25 +525,37 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     transition: stop-color 0.3s ease;
 }
 
+.spark-icon-stop-start {
+    stop-color: var(--blue);
+}
+
+.spark-icon-stop-middle {
+    stop-color: var(--purple);
+}
+
+.spark-icon-stop-end {
+    stop-color: var(--spark-pink);
+}
+
 .card-area:has(
         .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-start {
-    stop-color: #ec4899;
+    stop-color: var(--spark-pink);
 }
 
 .card-area:has(
         .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-middle {
-    stop-color: #f97316;
+    stop-color: var(--orange);
 }
 
 .card-area:has(
         .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-end {
-    stop-color: #facc15;
+    stop-color: var(--yellow);
 }
 
 .ai-button[aria-expanded="true"] {
@@ -457,7 +564,7 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     background-position:
         center,
         100% 50%;
-    box-shadow: 0 10px 28px rgba(139, 92, 246, 0.32);
+    box-shadow: var(--spark-active-shadow);
 }
 
 .shuffle-button {
@@ -509,8 +616,9 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     justify-content: center;
     height: 380px;
     padding: 52px;
+    border: 1px solid var(--surface-border);
     border-radius: 32px;
-    background: rgba(255, 255, 255, 0.86);
+    background: var(--card-bg);
     backdrop-filter: blur(16px);
     box-shadow: var(--card-shadow);
     text-align: center;
@@ -600,10 +708,11 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     width: min(620px, 100%);
     margin: 60px auto 0;
     padding: 20px;
+    border: 1px solid var(--surface-border);
     border-radius: 28px;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--panel-bg);
     backdrop-filter: blur(16px);
-    box-shadow: 0 18px 50px rgba(31, 41, 55, 0.12);
+    box-shadow: var(--panel-shadow);
     transform-origin: top center;
 }
 
@@ -665,9 +774,7 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
     background-position:
         center,
         100% 50%;
-    box-shadow:
-        0 11px 27px rgba(139, 92, 246, 0.23),
-        0 5px 16px rgba(236, 72, 153, 0.18);
+    box-shadow: var(--spark-hover-shadow);
     opacity: 1;
 }
 
@@ -708,7 +815,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 .spark-regenerate-thinking .spark-thinking-dots span {
     width: 5px;
     height: 5px;
-    background: linear-gradient(135deg, #f97316, #facc15);
+    background: linear-gradient(135deg, var(--orange), var(--yellow));
 }
 
 .spark-error {
@@ -748,8 +855,8 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     min-height: 148px;
     padding: 24px 24px 48px;
     border-radius: 24px;
-    background: #ffffff;
-    box-shadow: inset 0 0 0 1px rgba(139, 92, 246, 0.1);
+    background: var(--question-bg);
+    box-shadow: inset 0 0 0 1px var(--spark-outline);
     animation: sparkIn 180ms ease both;
 }
 
@@ -767,9 +874,9 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     border-radius: 999px;
     background: linear-gradient(
         90deg,
-        rgba(139, 92, 246, 0.08) 25%,
-        rgba(236, 72, 153, 0.18) 50%,
-        rgba(139, 92, 246, 0.08) 75%
+        var(--skeleton-edge) 25%,
+        var(--skeleton-middle) 50%,
+        var(--skeleton-edge) 75%
     );
     background-position: 100% 50%;
     background-size: 200% 100%;
@@ -786,7 +893,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 
 .spark-question {
     margin: 0;
-    color: #374151;
+    color: var(--question-text);
     font-size: clamp(1.1rem, 2.6vw, 1.55rem);
     font-weight: 650;
     line-height: 1.35;
@@ -813,6 +920,13 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     color: var(--muted);
     font-size: 0.8rem;
     font-weight: 700;
+}
+
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .spark-card,
+:root[data-theme="dark"] .not-found-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 
 /* Animations */
@@ -982,8 +1096,12 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 
 /* Responsive */
 @media (max-width: 640px) {
+    .app {
+        padding-top: 76px;
+    }
+
     .not-found-page {
-        padding: 36px 0;
+        padding: 76px 0 36px;
     }
 
     .not-found-card {
@@ -1083,7 +1201,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     align-items: center;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgba(190, 24, 93, 0.08);
+    background: var(--pink-soft);
     color: var(--pink);
     text-decoration: none;
     transition:
@@ -1112,7 +1230,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 .footer a:hover,
 .footer a:focus-visible {
     transform: translateY(-1px);
-    background: rgba(190, 24, 93, 0.14);
+    background: var(--pink-soft-hover);
     color: var(--pink);
 }
 

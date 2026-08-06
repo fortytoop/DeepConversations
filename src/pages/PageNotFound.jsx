@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AnimatingBackground from "../components/AnimatingBackground";
 
-export default function PageNotFound() {
+export default function PageNotFound({ theme }) {
   useEffect(() => {
     const previousTitle = document.title;
 
@@ -17,7 +17,7 @@ export default function PageNotFound() {
 
   return (
     <>
-      <AnimatingBackground />
+      <AnimatingBackground theme={theme} />
 
       <main className="not-found-page">
         <section className="not-found-card" aria-labelledby="not-found-title">
