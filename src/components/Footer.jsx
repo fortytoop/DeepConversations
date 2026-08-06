@@ -7,7 +7,7 @@ export default function Footer() {
           ·
         </span>
         <a
-          href="https://your-personal-site.com"
+          href="https://prateepkasinathan.com"
           target="_blank"
           rel="noopener noreferrer"
           title="Visit author’s website"
