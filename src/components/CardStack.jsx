@@ -32,6 +32,7 @@ function Cards({ cards, variant, count }) {
       className={`card ${
         visibleCardIndex === 0 ? "card-current" : ""
       } ${variant}-card`}
+      data-nosnippet
       style={{
         "--card-index": String(visibleCardIndex),
         "--card-count": String(cards.length),
