@@ -4,7 +4,6 @@ import { SPARK_CLOSE_ANIMATION_MS } from "../constants";
 // Controls the Spark panel, including opening/closing, loading,
 // generated questions, pagination, and backend generation limits
 export function useSparkQuestions(currentCard) {
-  const [isPressed, setIsPressed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -118,8 +117,6 @@ export function useSparkQuestions(currentCard) {
       return;
     }
 
-    setIsPressed(true);
-
     if (isOpen) {
       close();
       return;
@@ -127,10 +124,6 @@ export function useSparkQuestions(currentCard) {
 
     setIsOpen(true);
     generate({ replace: true });
-  }
-
-  function handleAnimationEnd() {
-    setIsPressed(false);
   }
 
   function goToPreviousQuestion() {
@@ -150,11 +143,9 @@ export function useSparkQuestions(currentCard) {
     generate,
     goToNextQuestion,
     goToPreviousQuestion,
-    handleAnimationEnd,
     handleClick,
     isClosing,
     isOpen,
-    isPressed,
     loading,
     maxTotalQuestions,
     questionIndex,

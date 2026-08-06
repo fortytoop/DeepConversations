@@ -7,7 +7,6 @@ export default function CardArea({
   categoryAnimation,
   isShuffled,
   isSparkOpen,
-  isSparkPressed,
   previousCategoryCardNumber,
   previousCategoryCards,
   pressedCardDirection,
@@ -17,21 +16,53 @@ export default function CardArea({
   onNextCard,
   onPreviousCard,
   onShuffleClick,
-  onSparkAnimationEnd,
   onSparkClick,
 }) {
   return (
     <section className="card-area">
+      <svg
+        className="spark-gradient-definitions"
+        width="0"
+        height="0"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <linearGradient
+            id="spark-button-icon-gradient"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+          >
+            <stop
+              className="spark-icon-stop spark-icon-stop-start"
+              offset="0%"
+              stopColor="#4285f4"
+            />
+            <stop
+              className="spark-icon-stop spark-icon-stop-middle"
+              offset="50%"
+              stopColor="#8b5cf6"
+            />
+            <stop
+              className="spark-icon-stop spark-icon-stop-end"
+              offset="100%"
+              stopColor="#ec4899"
+            />
+          </linearGradient>
+        </defs>
+      </svg>
+
       <div className="left-controls">
         <button
-          className={`ai-button ${isSparkPressed ? "clicked" : ""}`}
+          className="ai-button"
           type="button"
           onClick={onSparkClick}
-          onAnimationEnd={onSparkAnimationEnd}
           aria-label="Open Spark deep dive"
           aria-expanded={isSparkOpen}
         >
-          <BsStars />
+          <BsStars className="spark-gradient-icon" />
         </button>
       </div>
 

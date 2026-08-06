@@ -13,16 +13,31 @@ export default function SparkPanel({ spark }) {
         </p>
 
         <button
-          className="spark-regenerate-button"
+          className={`spark-regenerate-button${spark.loading ? " is-generating" : ""}`}
           type="button"
           onClick={() => spark.generate()}
           disabled={spark.loading || !spark.canGenerateMoreQuestions}
+          aria-label={spark.loading ? "Generating more questions" : undefined}
         >
-          {spark.loading
-            ? "Thinking..."
-            : spark.canGenerateMoreQuestions
-              ? "Generate more"
-              : "Limit reached"}
+          {spark.loading ? (
+            <>
+              <span className="spark-regenerate-placeholder" aria-hidden="true">
+                Generate more
+              </span>
+              <span className="spark-regenerate-thinking" aria-hidden="true">
+                <span className="spark-gradient-text">Thinking</span>
+                <span className="spark-thinking-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </span>
+            </>
+          ) : spark.canGenerateMoreQuestions ? (
+            <span className="spark-gradient-text">Generate more</span>
+          ) : (
+            <span className="spark-gradient-text">Limit reached</span>
+          )}
         </button>
       </div>
 
@@ -30,14 +45,15 @@ export default function SparkPanel({ spark }) {
 
       <div className="spark-content" aria-live="polite">
         {spark.loading && spark.questions.length === 0 && (
-          <div className="spark-thinking" role="status" aria-live="polite">
-            <span>Thinking</span>
-            <span className="spark-thinking-dots" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </div>
+          <article
+            className="spark-question-card spark-question-skeleton"
+            role="status"
+            aria-label="Generating questions"
+          >
+            <span className="spark-question-skeleton-line" aria-hidden="true"></span>
+            <span className="spark-question-skeleton-line" aria-hidden="true"></span>
+            <span className="spark-question-skeleton-line" aria-hidden="true"></span>
+          </article>
         )}
 
         {!spark.error && spark.questions.length > 0 && (

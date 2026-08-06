@@ -1,5 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,700,50,0&display=swap");
 
+@property --spark-gradient-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 110deg;
+}
+
 :root {
     --text: #1f2937;
     --muted: #6b7280;
@@ -7,6 +13,14 @@
     --pink: #be185d;
     --pink-dark: #831843;
     --purple: #8b5cf6;
+    --spark-spectrum: linear-gradient(
+        var(--spark-gradient-angle),
+        #4285f4,
+        #8b5cf6,
+        #ec4899,
+        #f97316,
+        #facc15
+    );
     --card-shadow: 0 24px 70px rgba(31, 41, 55, 0.16);
     --button-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
     --active-shadow: 0 4px 14px rgba(190, 24, 93, 0.28);
@@ -352,26 +366,98 @@ h1 {
     gap: 10px;
 }
 
-.ai-button,
 .shuffle-button.active {
     color: #ffffff;
 }
 
-.ai-button {
-    background: linear-gradient(135deg, var(--purple), #ec4899);
+.ai-button,
+.spark-regenerate-button {
+    border: 2px solid transparent;
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        var(--spark-spectrum) border-box;
+    background-position:
+        center,
+        0% 50%;
+    background-size:
+        100% 100%,
+        200% 200%;
+    box-shadow:
+        0 8px 22px rgba(139, 92, 246, 0.2),
+        0 3px 10px rgba(236, 72, 153, 0.1);
+    color: var(--pink-dark);
+    transition:
+        transform 0.18s ease,
+        --spark-gradient-angle 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        background-position 0.3s ease,
+        color 0.18s ease,
+        box-shadow 0.18s ease,
+        opacity 0.18s ease;
 }
 
-.ai-button.clicked {
-    animation: aiPulse 0.28s ease;
+button.ai-button:hover:not(:disabled):not(.pressed-left):not(
+        .pressed-right
+    ):not(.pressed-up):not(.pressed-down),
+button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
+        .pressed-right
+    ):not(.pressed-up):not(.pressed-down) {
+    --spark-gradient-angle: 470deg;
+
+    background-position:
+        center,
+        100% 50%;
+    box-shadow:
+        0 11px 27px rgba(139, 92, 246, 0.23),
+        0 5px 16px rgba(236, 72, 153, 0.18);
+}
+
+.ai-button {
+    color: var(--text);
+}
+
+.spark-gradient-definitions {
+    position: absolute;
+    width: 0;
+    height: 0;
+}
+
+.ai-button .spark-gradient-icon,
+.ai-button .spark-gradient-icon path {
+    fill: url("#spark-button-icon-gradient");
+}
+
+.spark-icon-stop {
+    transition: stop-color 0.3s ease;
+}
+
+.card-area:has(
+        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+    )
+    .spark-icon-stop-start {
+    stop-color: #ec4899;
+}
+
+.card-area:has(
+        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+    )
+    .spark-icon-stop-middle {
+    stop-color: #f97316;
+}
+
+.card-area:has(
+        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+    )
+    .spark-icon-stop-end {
+    stop-color: #facc15;
 }
 
 .ai-button[aria-expanded="true"] {
-    transform: scale(1.08);
-    box-shadow: 0 10px 28px rgba(139, 92, 246, 0.32);
-}
+    --spark-gradient-angle: 470deg;
 
-.ai-button[aria-expanded="true"]:hover:not(:disabled) {
-    transform: translateY(-2px) scale(1.08);
+    background-position:
+        center,
+        100% 50%;
+    box-shadow: 0 10px 28px rgba(139, 92, 246, 0.32);
 }
 
 .shuffle-button {
@@ -562,15 +648,67 @@ h1 {
 }
 
 .spark-regenerate-button {
+    display: grid;
     flex: 0 0 auto;
-    background: linear-gradient(135deg, var(--purple), #ec4899);
-    color: #ffffff;
+    place-items: center;
 }
 
 .spark-regenerate-button:disabled,
 .spark-navigation button:disabled {
     cursor: not-allowed;
     opacity: 0.45;
+}
+
+.spark-regenerate-button.is-generating:disabled {
+    --spark-gradient-angle: 470deg;
+
+    background-position:
+        center,
+        100% 50%;
+    box-shadow:
+        0 11px 27px rgba(139, 92, 246, 0.23),
+        0 5px 16px rgba(236, 72, 153, 0.18);
+    opacity: 1;
+}
+
+.spark-regenerate-placeholder,
+.spark-regenerate-thinking {
+    grid-area: 1 / 1;
+}
+
+.spark-regenerate-placeholder {
+    visibility: hidden;
+}
+
+.spark-gradient-text {
+    background: var(--spark-spectrum);
+    background-position: 0% 50%;
+    background-size: 200% 200%;
+    background-clip: text;
+    color: transparent;
+    transition:
+        --spark-gradient-angle 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        background-position 0.3s ease;
+    -webkit-background-clip: text;
+}
+
+button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
+.spark-regenerate-button.is-generating .spark-gradient-text {
+    --spark-gradient-angle: 470deg;
+
+    background-position: 100% 50%;
+}
+
+.spark-regenerate-thinking {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.spark-regenerate-thinking .spark-thinking-dots span {
+    width: 5px;
+    height: 5px;
+    background: linear-gradient(135deg, #f97316, #facc15);
 }
 
 .spark-error {
@@ -581,17 +719,6 @@ h1 {
 
 .spark-content {
     min-height: 148px;
-}
-
-.spark-thinking {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-    font-weight: 800;
-    line-height: 1.5;
 }
 
 .spark-thinking-dots {
@@ -626,6 +753,37 @@ h1 {
     animation: sparkIn 180ms ease both;
 }
 
+.spark-question-skeleton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    overflow: hidden;
+}
+
+.spark-question-skeleton-line {
+    width: 100%;
+    height: 14px;
+    border-radius: 999px;
+    background: linear-gradient(
+        90deg,
+        rgba(139, 92, 246, 0.08) 25%,
+        rgba(236, 72, 153, 0.18) 50%,
+        rgba(139, 92, 246, 0.08) 75%
+    );
+    background-position: 100% 50%;
+    background-size: 200% 100%;
+    animation: sparkSkeletonShimmer 1.25s ease-in-out infinite;
+}
+
+.spark-question-skeleton-line:nth-child(2) {
+    width: 86%;
+}
+
+.spark-question-skeleton-line:nth-child(3) {
+    width: 62%;
+}
+
 .spark-question {
     margin: 0;
     color: #374151;
@@ -658,24 +816,6 @@ h1 {
 }
 
 /* Animations */
-@keyframes aiPulse {
-    0% {
-        transform: scale(1) rotate(0deg);
-    }
-
-    40% {
-        transform: scale(0.88) rotate(-8deg);
-    }
-
-    70% {
-        transform: scale(1.06) rotate(6deg);
-    }
-
-    100% {
-        transform: scale(1) rotate(0deg);
-    }
-}
-
 @keyframes pillOutLeft {
     from {
         transform: translateX(0);
@@ -830,6 +970,16 @@ h1 {
     }
 }
 
+@keyframes sparkSkeletonShimmer {
+    from {
+        background-position: 100% 50%;
+    }
+
+    to {
+        background-position: -100% 50%;
+    }
+}
+
 /* Responsive */
 @media (max-width: 640px) {
     .not-found-page {
@@ -894,9 +1044,28 @@ h1 {
         filter: blur(26px) saturate(1.15);
     }
 
+    .ai-button,
+    .spark-regenerate-button,
     .home-button {
         transition: none;
     }
+
+    .spark-thinking-dots span {
+        animation: none;
+    }
+
+    .spark-question-skeleton-line {
+        animation: none;
+    }
+
+    .spark-gradient-text {
+        transition: none;
+    }
+
+    .spark-icon-stop {
+        transition: none;
+    }
+
 }
 
 /* Footer */

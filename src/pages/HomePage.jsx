@@ -54,7 +54,6 @@ export default function HomePage() {
             categoryAnimation={deck.categoryAnimation}
             isShuffled={deck.isShuffled}
             isSparkOpen={spark.isOpen}
-            isSparkPressed={spark.isPressed}
             previousCategoryCardNumber={deck.previousCategoryCardNumber}
             previousCategoryCards={deck.previousCategoryCards}
             pressedCardDirection={deck.pressedCardDirection}
@@ -64,7 +63,6 @@ export default function HomePage() {
             onNextCard={goToNextCard}
             onPreviousCard={goToPreviousCard}
             onShuffleClick={deck.handleShuffleClick}
-            onSparkAnimationEnd={spark.handleAnimationEnd}
             onSparkClick={spark.handleClick}
           />
         )}
