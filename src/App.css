@@ -25,20 +25,16 @@
         var(--orange),
         var(--yellow)
     );
-    --page-background:
-        radial-gradient(circle at top, #fff7ed, transparent 35%),
-        linear-gradient(135deg, #fdf2f8, #eef2ff);
-    --page-overlay:
-        radial-gradient(
-            circle at top,
-            rgba(255, 247, 237, 0.72),
-            transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(253, 242, 248, 0.58),
-            rgba(238, 242, 255, 0.66)
-        );
+    --page-background: linear-gradient(135deg, #fdf2f8, #eef2ff);
+    --page-overlay: linear-gradient(
+        135deg,
+        rgba(253, 242, 248, 0.32),
+        rgba(238, 242, 255, 0.38)
+    );
+    --vanta-highlight: #ffe0cf;
+    --vanta-midtone: #f7bfd9;
+    --vanta-lowlight: #b9c5f5;
+    --vanta-base: #f5edf8;
     --button-bg: #ffffff;
     --card-bg: rgba(255, 255, 255, 0.86);
     --panel-bg: rgba(255, 255, 255, 0.9);
@@ -77,20 +73,16 @@
     --spark-pink: #dea3bc;
     --orange: #d89a80;
     --yellow: #ddc285;
-    --page-background:
-        radial-gradient(circle at top, #2a1727, transparent 36%),
-        linear-gradient(135deg, #0f0d16, #171225);
-    --page-overlay:
-        radial-gradient(
-            circle at top,
-            rgba(122, 54, 89, 0.34),
-            transparent 38%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(15, 13, 22, 0.48),
-            rgba(23, 18, 37, 0.58)
-        );
+    --page-background: linear-gradient(135deg, #0f0d16, #171225);
+    --page-overlay: linear-gradient(
+        135deg,
+        rgba(15, 13, 22, 0.48),
+        rgba(23, 18, 37, 0.58)
+    );
+    --vanta-highlight: #5b2440;
+    --vanta-midtone: #3a1b3f;
+    --vanta-lowlight: #1e1b4b;
+    --vanta-base: #0f0d16;
     --button-bg: #292233;
     --card-bg: #211c2b;
     --panel-bg: #211c2b;
@@ -123,25 +115,16 @@
 }
 
 body {
+    position: relative;
     min-height: 100vh;
     margin: 0;
     overflow-x: hidden;
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
-    background: var(--page-background);
+    background: var(--browser-background);
     transition:
         color 0.25s ease,
         background 0.25s ease;
-}
-
-body::before {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    content: "";
-    background: var(--page-overlay);
-    transition: background 0.25s ease;
 }
 
 button {
@@ -179,19 +162,27 @@ a:focus-visible {
 }
 
 /* Layout */
-.lava-lamp-background {
+.vanta-background {
     position: fixed;
-    inset: 0;
+    inset: -96px 0;
     z-index: 0;
-    width: 100vw;
-    height: 100vh;
-    filter: blur(28px) saturate(0.92);
-    opacity: 0.62;
-    transform: scale(1.08);
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    background: var(--page-background);
+}
+
+.vanta-background::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    content: "";
+    background: var(--page-overlay);
+    transition: background 0.25s ease;
 }
 
 .theme-toggle {
-    position: fixed;
+    position: absolute;
     top: max(18px, env(safe-area-inset-top));
     right: max(18px, env(safe-area-inset-right));
     z-index: 3;
@@ -218,11 +209,6 @@ a:focus-visible {
 /* Not found page */
 body.not-found-active {
     overflow: hidden;
-}
-
-body.not-found-active #root {
-    width: 100%;
-    border-inline: 0;
 }
 
 .not-found-page {
@@ -492,20 +478,6 @@ h1 {
         opacity 0.18s ease;
 }
 
-button.ai-button:hover:not(:disabled):not(.pressed-left):not(
-        .pressed-right
-    ):not(.pressed-up):not(.pressed-down),
-button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
-        .pressed-right
-    ):not(.pressed-up):not(.pressed-down) {
-    --spark-gradient-angle: 470deg;
-
-    background-position:
-        center,
-        100% 50%;
-    box-shadow: var(--spark-hover-shadow);
-}
-
 .ai-button {
     color: var(--text);
 }
@@ -538,24 +510,48 @@ button.spark-regenerate-button:hover:not(:disabled):not(.pressed-left):not(
 }
 
 .card-area:has(
-        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+        .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-start {
     stop-color: var(--spark-pink);
 }
 
 .card-area:has(
-        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+        .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-middle {
     stop-color: var(--orange);
 }
 
 .card-area:has(
-        .ai-button:is(:hover, :focus-visible, [aria-expanded="true"])
+        .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-end {
     stop-color: var(--yellow);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    button.ai-button:hover:not(:disabled),
+    button.spark-regenerate-button:hover:not(:disabled) {
+        --spark-gradient-angle: 470deg;
+
+        background-position:
+            center,
+            100% 50%;
+        box-shadow: var(--spark-hover-shadow);
+    }
+
+    .card-area:has(.ai-button:hover) .spark-icon-stop-start {
+        stop-color: var(--spark-pink);
+    }
+
+    .card-area:has(.ai-button:hover) .spark-icon-stop-middle {
+        stop-color: var(--orange);
+    }
+
+    .card-area:has(.ai-button:hover) .spark-icon-stop-end {
+        stop-color: var(--yellow);
+    }
 }
 
 .ai-button[aria-expanded="true"] {
@@ -1096,12 +1092,50 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 
 /* Responsive */
 @media (max-width: 640px) {
+    .vanta-background {
+        top: -96px;
+        right: 0;
+        bottom: auto;
+        left: 0;
+        height: calc(100vh + 192px);
+        height: calc(100lvh + 192px);
+    }
+
+    .vanta-background::after {
+        background: linear-gradient(
+            to bottom,
+            var(--browser-background) 0,
+            var(--browser-background) 96px,
+            var(--browser-background-transparent) 200px
+        );
+    }
+
+    #root::after {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 0;
+        height: calc(120px + env(safe-area-inset-bottom));
+        pointer-events: none;
+        content: "";
+        background: linear-gradient(
+            to bottom,
+            var(--browser-background-transparent),
+            var(--browser-background)
+        );
+    }
+
     .app {
-        padding-top: 76px;
+        padding-top: calc(76px + env(safe-area-inset-top));
+        padding-bottom: calc(48px + env(safe-area-inset-bottom));
     }
 
     .not-found-page {
-        padding: 76px 0 36px;
+        padding:
+            calc(76px + env(safe-area-inset-top))
+            0
+            calc(36px + env(safe-area-inset-bottom));
     }
 
     .not-found-card {
@@ -1158,10 +1192,6 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .lava-lamp-background {
-        filter: blur(26px) saturate(1.15);
-    }
-
     .ai-button,
     .spark-regenerate-button,
     .home-button {

@@ -5,10 +5,13 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  --browser-background: #f7eff8;
+  --browser-background-transparent: rgba(247, 239, 248, 0);
+  background: var(--browser-background);
+
   font: 16px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light;
-  background: #fff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -18,23 +21,23 @@
 :root[data-theme='dark'] {
   --border: #40364e;
   color-scheme: dark;
-  background: #0f0d16;
-}
 
-body {
-  margin: 0;
+  --browser-background: #0f0d16;
+  --browser-background-transparent: rgba(15, 13, 22, 0);
+  background: var(--browser-background);
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
+  position: relative;
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+html,
+body {
+  min-height: 100%;
+  background-color: var(--browser-background);
+  margin: 0;
 }
 
 h1,

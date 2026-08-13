@@ -10,8 +10,18 @@ export function useTheme() {
   const [theme, setTheme] = useState(getSystemTheme);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
+    const root = document.documentElement;
+
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+
+    const browserBackground = getComputedStyle(root)
+      .getPropertyValue("--browser-background")
+      .trim();
+
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", browserBackground);
   }, [theme]);
 
   function toggleTheme() {
