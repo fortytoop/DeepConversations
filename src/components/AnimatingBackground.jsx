@@ -1,8 +1,12 @@
 import { useEffect, useRef } from "react";
 
+// Test no animating backgrounds
+const ANIMATED_BACKGROUND_ENABLED =
+  !import.meta.env.DEV ||
+  import.meta.env.VITE_ANIMATED_BACKGROUND_ENABLED !== "false";
+
 function getCssColour(styles, property) {
   const value = styles.getPropertyValue(property).trim();
-
   return Number.parseInt(value.replace("#", ""), 16);
 }
 
@@ -11,19 +15,21 @@ export default function AnimatingBackground({ theme }) {
   const backgroundRef = useRef(null);
 
   useEffect(() => {
-    const background = backgroundRef.current;
+    if (!ANIMATED_BACKGROUND_ENABLED) return undefined;
 
+    const background = backgroundRef.current;
     if (!background) return undefined;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    // Fallback to static CSS specified colour
+    if (prefersReducedMotion) return undefined;
 
     const mobileQuery = window.matchMedia(
       "(max-width: 640px), (hover: none) and (pointer: coarse)",
     );
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
 
-    // The CSS fallback remains visible without starting a render loop.
-    if (prefersReducedMotion) return undefined;
 
     let effect;
     let handleStableResize;

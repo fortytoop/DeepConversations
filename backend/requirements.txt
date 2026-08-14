@@ -1,5 +1,6 @@
-numpy
-fastapi
-uvicorn
-openai
-python-dotenv
+numpy==2.5.1
+fastapi==0.139.0
+uvicorn==0.50.2
+openai==2.44.0
+python-dotenv==1.2.2
+slowapi==0.1.10

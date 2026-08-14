@@ -8,6 +8,10 @@ export default function CardNavigation({
   onPreviousCard,
   onShuffleClick,
 }) {
+  const shuffleLabel = isShuffled
+    ? "Restore question order"
+    : "Shuffle question order";
+
   return (
     <div className="card-nav-buttons">
       <button
@@ -16,7 +20,8 @@ export default function CardNavigation({
         }`}
         type="button"
         onClick={onShuffleClick}
-        aria-label="Shuffle cards"
+        aria-label={shuffleLabel}
+        title={shuffleLabel}
         aria-pressed={isShuffled}
       >
         <BsShuffle />
@@ -26,7 +31,8 @@ export default function CardNavigation({
         className={pressedCardDirection === "up" ? "pressed-up" : ""}
         type="button"
         onClick={onPreviousCard}
-        aria-label="Previous card"
+        aria-label="Previous question"
+        title="Previous question"
       >
         <BsArrowUp />
       </button>
@@ -35,7 +41,8 @@ export default function CardNavigation({
         className={pressedCardDirection === "down" ? "pressed-down" : ""}
         type="button"
         onClick={onNextCard}
-        aria-label="Next card"
+        aria-label="Next question"
+        title="Next question"
       >
         <BsArrowDown />
       </button>

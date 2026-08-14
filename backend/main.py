@@ -1,17 +1,21 @@
 import json
 import os
 import re
-from typing import List, Optional
+from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Annotated, List, Literal
 
 import numpy as np
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, StringConstraints
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 load_dotenv()
-
 
 if not (openai_api_key := os.getenv("OPENAI_API_KEY")):
     raise RuntimeError("OPENAI_API_KEY is not configured")
@@ -19,7 +23,88 @@ if not (openai_api_key := os.getenv("OPENAI_API_KEY")):
 client = OpenAI(api_key=openai_api_key)
 
 
-app = FastAPI()
+QUESTIONS_PER_BATCH = 3
+MAX_GENERATE_CLICKS = 2
+# The first generation happens automatically, hence + 1
+# Default MAX_TOTAL_QUESTIONS = 9
+MAX_TOTAL_QUESTIONS = QUESTIONS_PER_BATCH * (MAX_GENERATE_CLICKS + 1)
+MAX_ORIGINAL_QUESTION_LENGTH = 500
+MAX_FOLLOW_UP_QUESTION_LENGTH = 300
+
+
+limiter = Limiter(
+    key_func=get_remote_address,
+    headers_enabled=True,
+)
+
+FollowUpQuestion = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True,
+        min_length=1,
+        max_length=MAX_FOLLOW_UP_QUESTION_LENGTH,
+    ),
+]
+
+
+class QuestionRequest(BaseModel):
+    cardId: int = Field(ge=0, strict=True)
+    mode: Literal["deepdive"] = "deepdive"
+    previousQuestions: List[FollowUpQuestion] = Field(
+        default_factory=list,
+        max_length=MAX_TOTAL_QUESTIONS,
+    )
+
+
+def load_conversation_questions() -> dict[int, str]:
+    questions_path = Path(__file__).with_name("questions.json")
+
+    try:
+        with questions_path.open(encoding="utf-8") as questions_file:
+            question_cards = json.load(questions_file)
+    except (OSError, json.JSONDecodeError) as error:
+        raise RuntimeError("Could not load the conversation questions") from error
+
+    if not isinstance(question_cards, list):
+        raise RuntimeError("Conversation questions must be a JSON array")
+
+    questions_by_id: dict[int, str] = {}
+
+    for card in question_cards:
+        if not isinstance(card, dict):
+            raise RuntimeError("Every conversation card must be a JSON object")
+
+        card_id = card.get("id")
+        question = card.get("question")
+
+        if (
+            not isinstance(card_id, int)
+            or isinstance(card_id, bool)
+            or card_id < 0
+            or card_id in questions_by_id
+            or not isinstance(question, str)
+            or not (cleaned_question := question.strip())
+            or len(cleaned_question) > MAX_ORIGINAL_QUESTION_LENGTH
+        ):
+            raise RuntimeError("Conversation question data is invalid")
+
+        questions_by_id[card_id] = cleaned_question
+
+    if not questions_by_id:
+        raise RuntimeError("No conversation questions were found")
+
+    return questions_by_id
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    app.state.conversation_questions = load_conversation_questions()
+    yield
+
+
+app = FastAPI(lifespan=lifespan)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 allowed_origins = [
     origin.strip()
@@ -39,20 +124,11 @@ app.add_middleware(
 )
 
 
-QUESTIONS_PER_BATCH = 3
-MAX_GENERATE_CLICKS = 2
-# The first generation happens automatically, hence + 1
-# # Default MAX_TOTAL_QUESTIONS = 9
-MAX_TOTAL_QUESTIONS = QUESTIONS_PER_BATCH * (MAX_GENERATE_CLICKS + 1)
+def get_conversation_questions(request: Request) -> dict[int, str]:
+    return request.app.state.conversation_questions
 
 
-class QuestionRequest(BaseModel):
-    question: str
-    mode: Optional[str] = "deepdive"
-    previousQuestions: List[str] = Field(default_factory=list)
-
-
-@app.get("/")
+@app.get("/api/health")
 def health_check():
     return {"status": "ok"}
 
@@ -185,20 +261,35 @@ def remove_similar_questions(
 
 
 @app.post("/api/spark")
-def create_question_response(request: QuestionRequest):
-    original_conversation_question = request.question.strip()
+@limiter.limit(
+    "6/minute",
+    error_message=(
+        "Spark AI has received too many requests. Please wait a minute and try again."
+    ),
+)
+@limiter.limit(
+    "30/hour",
+    error_message=(
+        "Spark AI has received too many requests. Please come back later and try again."
+    ),
+)
+def create_question_response(
+    request: Request,
+    response: Response,
+    spark_request: QuestionRequest,
+    conversation_questions: Annotated[
+        dict[int, str], Depends(get_conversation_questions)
+    ],
+):
+    original_conversation_question = conversation_questions.get(spark_request.cardId)
+    if original_conversation_question is None:
+        raise HTTPException(status_code=400, detail="Unknown conversation card")
+
     previous_follow_up_questions = [
         previous_question
-        for question in request.previousQuestions
+        for question in spark_request.previousQuestions
         if (previous_question := clean_question(question))
     ]
-
-    if not original_conversation_question:
-        raise HTTPException(status_code=400, detail="Conversation question is required")
-
-    # Implementation of other modes not done, stop request for now
-    if request.mode != "deepdive":
-        raise HTTPException(status_code=400, detail="Only deepdive mode is supported")
 
     if len(previous_follow_up_questions) >= MAX_TOTAL_QUESTIONS:
         raise HTTPException(
@@ -221,9 +312,10 @@ def create_question_response(request: QuestionRequest):
             else "None yet."
         )
 
-        response = client.responses.create(
+        openai_response = client.responses.create(
             model="gpt-5.6-luna",
             store=False,
+            temperature=1.0,
             instructions="""
                 You are Spark, a warm conversation assistant for couples.
                 Help users explore relationship questions thoughtfully.
@@ -244,14 +336,20 @@ def create_question_response(request: QuestionRequest):
                 - Do not repeat or closely paraphrase any already generated question.
                 - Stay connected to the original conversation question.
                 - Make each question emotionally specific and natural to ask out loud.
-                - Keep each question succinct.
+                - Keep each question succinct, under {MAX_FOLLOW_UP_QUESTION_LENGTH} characters long.
                 - Return this exact JSON shape:
                 {{"questions": ["question 1", "question 2", "question 3"]}}
             """,
         )
 
+        valid_generated_questions = [
+            question
+            for question in parse_questions(openai_response.output_text)
+            if len(question) <= MAX_FOLLOW_UP_QUESTION_LENGTH
+        ]
+
         questions = remove_similar_questions(
-            parse_questions(response.output_text),
+            valid_generated_questions,
             previous_follow_up_questions,
         )[:QUESTIONS_PER_BATCH]
 
@@ -263,6 +361,7 @@ def create_question_response(request: QuestionRequest):
 
         return {
             "questions": questions,
+            "questionsPerBatch": QUESTIONS_PER_BATCH,
             "remainingGenerations": max(
                 (
                     MAX_TOTAL_QUESTIONS

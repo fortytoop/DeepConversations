@@ -72,6 +72,9 @@ credentials.json
 # Local configuration
 *.local
 
+# Local project notes
+/TODO.md
+
 # Editors
 .vscode/*
 !.vscode/extensions.json

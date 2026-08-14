@@ -24,12 +24,11 @@ DeepConversations is a flashcard-style web app for couples (and friends), design
 
 ```text
 DeepConversations/
-├── backend/              # FastAPI application
+├── backend/              # FastAPI application and canonical question data
 ├── deployment/           # Example deployment configuration
 ├── public/               # Static assets
 ├── src/                  # React application source
 │   ├── components/
-│   ├── data/
 │   ├── hooks/
 │   └── utils/
 ├── firebase.json
@@ -171,7 +170,7 @@ No frontend environment variables are required. During local development, Vite p
 
 ## Data and Content Attribution
 
-The 75 prompts in `src/data/questions.json` were manually compiled from The Gottman Institute article [“75 Insightful Questions to Deepen Emotional Intimacy”](https://www.gottman.com/blog/75-insightful-questions-to-deepen-emotional-intimacy/). The article and its content belong to The Gottman Institute. 
+The 75 prompts in `backend/questions.json` were manually compiled from The Gottman Institute article [“75 Insightful Questions to Deepen Emotional Intimacy”](https://www.gottman.com/blog/75-insightful-questions-to-deepen-emotional-intimacy/). The article and its content belong to The Gottman Institute.
 
 ## Icon Attribution
 

@@ -1,9 +1,35 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { SPARK_CLOSE_ANIMATION_MS } from "../constants";
+import { readSparkCache, writeSparkCache } from "../utils/sparkCache";
+import { parseSparkResponse } from "../utils/sparkData";
+
+// Test dropped connection
+const SIMULATE_SPARK_AI_FAILURE =
+  import.meta.env.DEV &&
+  import.meta.env.VITE_SIMULATE_SPARK_AI_FAILURE === "true";
+
+function parseRateLimitError(data) {
+  if (typeof data?.error !== "string") return "";
+
+  const message = data.error.startsWith("Rate limit exceeded: ")
+    ? data.error.slice("Rate limit exceeded: ".length).trim()
+    : "";
+
+  return message.length <= 200 ? message : "";
+}
+
+class SparkApiError extends Error {
+  constructor(status, message) {
+    super(message);
+    this.name = "SparkApiError";
+    this.status = status;
+  }
+}
 
 // Controls the Spark panel, including opening/closing, loading,
 // generated questions, pagination, and backend generation limits
 export function useSparkQuestions(currentCard) {
+  const requestInProgressRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -17,11 +43,17 @@ export function useSparkQuestions(currentCard) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const canGenerateMoreQuestions = remainingGenerations > 0;
+  // Until the backend returns limit metadata, the quota is unknown rather
+  // than exhausted. This also keeps retrying available after network errors.
+  const hasReachedGenerationLimit =
+    maxTotalQuestions !== null && remainingGenerations <= 0;
+  const canGenerateMoreQuestions = !hasReachedGenerationLimit;
 
   // Generate Spark questions for the current card
   // When replace is true, start a fresh Spark session instead of appending questions
   async function generate({ replace = false } = {}) {
+    if (requestInProgressRef.current) return;
+
     if (!currentCard?.question) {
       setError("No question found for this card.");
       return;
@@ -35,6 +67,7 @@ export function useSparkQuestions(currentCard) {
     // Send existing questions so the backend
     const previousQuestions = replace ? [] : questions;
 
+    requestInProgressRef.current = true;
     setLoading(true);
     setError("");
 
@@ -47,6 +80,11 @@ export function useSparkQuestions(currentCard) {
     }
 
     try {
+      if (SIMULATE_SPARK_AI_FAILURE) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        throw new Error("Testing connection dropped");
+      }
+
       const response = await fetch("/api/spark", {
         method: "POST",
         headers: {
@@ -54,41 +92,50 @@ export function useSparkQuestions(currentCard) {
         },
         body: JSON.stringify({
           mode: "deepdive",
-          question: currentCard.question,
+          cardId: currentCard.id,
           previousQuestions,
         }),
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Spark backend error:", response.status, errorText);
-        throw new Error(errorText);
+        const errorData = await response.json().catch(() => null);
+        console.error("Spark AI backend error:", response.status, errorData);
+        throw new SparkApiError(
+          response.status,
+          response.status === 429 ? parseRateLimitError(errorData) : "",
+        );
       }
 
       const data = await response.json();
-      const newQuestions = Array.isArray(data.questions) ? data.questions : [];
-
-      if (newQuestions.length === 0) {
-        throw new Error("Spark returned no new deep dive questions.");
-      }
+      const parsedData = parseSparkResponse(data, previousQuestions.length);
+      if (!parsedData) throw new Error("Spark AI returned invalid question data.");
 
       // Insert the newly generated question first
       const insertionIndex = replace ? 0 : previousQuestions.length;
+      const updatedQuestions = replace
+        ? parsedData.questions
+        : [...previousQuestions, ...parsedData.questions];
 
-      setQuestions((existingQuestions) =>
-        replace ? newQuestions : [...existingQuestions, ...newQuestions],
-      );
+      setQuestions(updatedQuestions);
       setQuestionIndex(insertionIndex);
-      setRemainingGenerations(Number(data.remainingGenerations) || 0);
-      setMaxTotalQuestions(
-        Number.isFinite(Number(data.maxTotalQuestions))
-          ? Number(data.maxTotalQuestions)
-          : null,
-      );
+      setRemainingGenerations(parsedData.remainingGenerations);
+      setMaxTotalQuestions(parsedData.maxTotalQuestions);
+      writeSparkCache(currentCard, {
+        questions: updatedQuestions,
+        questionsPerBatch: parsedData.questionsPerBatch,
+        remainingGenerations: parsedData.remainingGenerations,
+        maxTotalQuestions: parsedData.maxTotalQuestions,
+      });
     } catch (sparkError) {
-      console.error("Spark failed:", sparkError);
-      setError("Sorry, Spark could not generate new questions right now.");
+      console.error("Spark AI failed:", sparkError);
+      setError(
+        sparkError instanceof SparkApiError && sparkError.status === 429
+          ? sparkError.message ||
+              "Spark has received too many requests. Please wait a moment and try again."
+          : "Couldn’t generate more questions. Check your connection and try again.",
+      );
     } finally {
+      requestInProgressRef.current = false;
       setLoading(false);
     }
   }
@@ -122,7 +169,19 @@ export function useSparkQuestions(currentCard) {
       return;
     }
 
+    const cachedSpark = readSparkCache(currentCard);
+
     setIsOpen(true);
+    setError("");
+
+    if (cachedSpark) {
+      setQuestions(cachedSpark.questions);
+      setQuestionIndex(0);
+      setRemainingGenerations(cachedSpark.remainingGenerations);
+      setMaxTotalQuestions(cachedSpark.maxTotalQuestions);
+      return;
+    }
+
     generate({ replace: true });
   }
 

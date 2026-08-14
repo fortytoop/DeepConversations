@@ -1,4 +1,4 @@
-import questions from "../data/questions.json";
+import questions from "../../backend/questions.json";
 import AnimatingBackground from "../components/AnimatingBackground";
 import CardArea from "../components/CardArea";
 import CategoryControls from "../components/CategoryControls";
@@ -53,7 +53,7 @@ export default function HomePage({ theme }) {
             cardNumber={deck.cardNumber}
             categoryAnimation={deck.categoryAnimation}
             isShuffled={deck.isShuffled}
-            isSparkOpen={spark.isOpen}
+            isSparkOpen={spark.isOpen && !spark.isClosing}
             previousCategoryCardNumber={deck.previousCategoryCardNumber}
             previousCategoryCards={deck.previousCategoryCards}
             pressedCardDirection={deck.pressedCardDirection}

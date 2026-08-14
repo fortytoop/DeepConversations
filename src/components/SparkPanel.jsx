@@ -1,47 +1,68 @@
-import { BsStars } from "react-icons/bs";
+import {
+  BsArrowClockwise,
+  BsArrowLeft,
+  BsArrowRight,
+  BsExclamationCircle,
+  BsLock,
+  BsPlusLg,
+  BsStars,
+} from "react-icons/bs";
 
 export default function SparkPanel({ spark }) {
+  const generateButtonLabel = spark.loading
+    ? "Generating questions"
+    : spark.error
+      ? "Try generating questions again"
+      : spark.canGenerateMoreQuestions
+        ? "Generate more questions"
+        : "Question limit reached";
+
   return (
     <section
       className={`spark-card ${spark.isClosing ? "closing" : "opening"}`}
       aria-label="Spark deep dive"
     >
       <div className="spark-header">
-        <p className="spark-eyebrow">
+        <h3 className="spark-eyebrow">
           <BsStars aria-hidden="true" />
-          <span>Spark deep dive</span>
-        </p>
+          <span>Spark AI</span>
+        </h3>
 
         <button
           className={`spark-regenerate-button${spark.loading ? " is-generating" : ""}`}
           type="button"
           onClick={() => spark.generate()}
           disabled={spark.loading || !spark.canGenerateMoreQuestions}
-          aria-label={spark.loading ? "Generating more questions" : undefined}
+          aria-label={generateButtonLabel}
+          title={generateButtonLabel}
         >
           {spark.loading ? (
+            <span
+              className="spark-thinking-dots spark-regenerate-dots"
+              aria-hidden="true"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          ) : spark.error ? (
             <>
-              <span className="spark-regenerate-placeholder" aria-hidden="true">
-                Generate more
-              </span>
-              <span className="spark-regenerate-thinking" aria-hidden="true">
-                <span className="spark-gradient-text">Thinking</span>
-                <span className="spark-thinking-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-              </span>
+              <BsArrowClockwise aria-hidden="true" />
+              <span>Try again</span>
             </>
           ) : spark.canGenerateMoreQuestions ? (
-            <span className="spark-gradient-text">Generate more</span>
+            <>
+              <BsPlusLg className="spark-plus-icon" aria-hidden="true" />
+              <span>Generate more</span>
+            </>
           ) : (
-            <span className="spark-gradient-text">Limit reached</span>
+            <>
+              <BsLock className="spark-lock-icon" aria-hidden="true" />
+              <span>Limit reached</span>
+            </>
           )}
         </button>
       </div>
-
-      {spark.error && <p className="spark-error">{spark.error}</p>}
 
       <div className="spark-content" aria-live="polite">
         {spark.loading && spark.questions.length === 0 && (
@@ -56,7 +77,17 @@ export default function SparkPanel({ spark }) {
           </article>
         )}
 
-        {!spark.error && spark.questions.length > 0 && (
+        {spark.error && spark.questions.length === 0 && (
+          <div
+            className="spark-error-message spark-standalone-error"
+            role="alert"
+          >
+            <BsExclamationCircle aria-hidden="true" />
+            <p className="spark-error">{spark.error}</p>
+          </div>
+        )}
+
+        {spark.questions.length > 0 && (
           <article className="spark-question-card">
             <p className="spark-question">
               {spark.questions[spark.questionIndex]}
@@ -67,6 +98,13 @@ export default function SparkPanel({ spark }) {
             </p>
           </article>
         )}
+
+        {spark.error && spark.questions.length > 0 && (
+          <div className="spark-error-message spark-inline-error" role="alert">
+            <BsExclamationCircle aria-hidden="true" />
+            <p className="spark-error">{spark.error}</p>
+          </div>
+        )}
       </div>
 
       <div className="spark-navigation">
@@ -74,8 +112,9 @@ export default function SparkPanel({ spark }) {
           type="button"
           onClick={spark.goToPreviousQuestion}
           disabled={spark.questionIndex === 0}
+          title="Previous follow-up question"
         >
-          Previous
+          <BsArrowLeft aria-hidden="true" />
         </button>
 
         <button
@@ -85,8 +124,9 @@ export default function SparkPanel({ spark }) {
             spark.questions.length === 0 ||
             spark.questionIndex === spark.questions.length - 1
           }
+          title="Next follow-up question"
         >
-          Next
+          <BsArrowRight aria-hidden="true" />
         </button>
       </div>
 

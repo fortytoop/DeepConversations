@@ -17,6 +17,7 @@ export default function CategoryControls({
         type="button"
         onClick={onPreviousCategory}
         aria-label="Previous category"
+        title="Previous category"
       >
         <BsChevronLeft />
       </button>
@@ -38,6 +39,7 @@ export default function CategoryControls({
         type="button"
         onClick={onNextCategory}
         aria-label="Next category"
+        title="Next category"
       >
         <BsChevronRight />
       </button>

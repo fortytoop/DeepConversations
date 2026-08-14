@@ -19,11 +19,9 @@
     --yellow: #facc15;
     --spark-spectrum: linear-gradient(
         var(--spark-gradient-angle),
-        var(--blue),
-        var(--purple),
-        var(--spark-pink),
-        var(--orange),
-        var(--yellow)
+        var(--spark-pink) 0%,
+        var(--orange) 50%,
+        var(--yellow) 100%
     );
     --page-background: linear-gradient(135deg, #fdf2f8, #eef2ff);
     --page-overlay: linear-gradient(
@@ -43,6 +41,9 @@
     --surface-border: rgba(255, 255, 255, 0.7);
     --pink-soft: rgba(190, 24, 93, 0.08);
     --pink-soft-hover: rgba(190, 24, 93, 0.14);
+    --error-bg: rgba(190, 24, 93, 0.08);
+    --error-border: rgba(190, 24, 93, 0.38);
+    --error-shadow: none;
     --focus-ring: rgba(190, 24, 93, 0.35);
     --active-foreground: #ffffff;
     --spark-outline: rgba(139, 92, 246, 0.1);
@@ -91,6 +92,9 @@
     --surface-border: #40364e;
     --pink-soft: rgba(201, 124, 159, 0.12);
     --pink-soft-hover: rgba(201, 124, 159, 0.18);
+    --error-bg: rgba(201, 124, 159, 0.2);
+    --error-border: rgba(222, 163, 188, 0.72);
+    --error-shadow: 0 0 18px rgba(201, 124, 159, 0.14);
     --focus-ring: rgba(169, 155, 221, 0.52);
     --active-foreground: #211c2b;
     --spark-outline: rgba(169, 155, 221, 0.2);
@@ -467,7 +471,7 @@ h1 {
     background-size:
         100% 100%,
         200% 200%;
-    box-shadow: var(--spark-shadow);
+    box-shadow: var(--button-shadow);
     color: var(--pink-dark);
     transition:
         transform 0.18s ease,
@@ -479,7 +483,27 @@ h1 {
 }
 
 .ai-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     color: var(--text);
+}
+
+.ai-button::before {
+    position: absolute;
+    inset: 2px;
+    z-index: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    content: "";
+    background: var(--spark-spectrum);
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+
+.ai-button > * {
+    position: relative;
+    z-index: 1;
 }
 
 .spark-gradient-definitions {
@@ -494,19 +518,19 @@ h1 {
 }
 
 .spark-icon-stop {
-    transition: stop-color 0.3s ease;
+    transition: stop-color 0.12s ease;
 }
 
 .spark-icon-stop-start {
-    stop-color: var(--blue);
+    stop-color: var(--spark-pink);
 }
 
 .spark-icon-stop-middle {
-    stop-color: var(--purple);
+    stop-color: var(--orange);
 }
 
 .spark-icon-stop-end {
-    stop-color: var(--spark-pink);
+    stop-color: var(--yellow);
 }
 
 .card-area:has(
@@ -531,8 +555,7 @@ h1 {
 }
 
 @media (hover: hover) and (pointer: fine) {
-    button.ai-button:hover:not(:disabled),
-    button.spark-regenerate-button:hover:not(:disabled) {
+    button.ai-button:hover:not(:disabled) {
         --spark-gradient-angle: 470deg;
 
         background-position:
@@ -557,10 +580,17 @@ h1 {
 .ai-button[aria-expanded="true"] {
     --spark-gradient-angle: 470deg;
 
-    background-position:
-        center,
-        100% 50%;
-    box-shadow: var(--spark-active-shadow);
+    box-shadow: var(--button-shadow);
+}
+
+.ai-button[aria-expanded="true"]::before {
+    --spark-gradient-angle: 470deg;
+
+    opacity: 1;
+}
+
+.card-area:has(.ai-button[aria-expanded="true"]) .spark-icon-stop {
+    stop-color: var(--button-bg);
 }
 
 .shuffle-button {
@@ -734,8 +764,9 @@ h1 {
     gap: 8px;
     margin: 0;
     color: var(--pink);
-    font-size: 0.84rem;
+    font-size: 1rem;
     font-weight: 800;
+    line-height: 1.3;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -753,9 +784,37 @@ h1 {
 }
 
 .spark-regenerate-button {
-    display: grid;
+    display: inline-flex;
     flex: 0 0 auto;
-    place-items: center;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 180px;
+    height: 44px;
+    padding: 0 16px;
+    border: 2px solid var(--pink);
+    border-radius: 14px;
+    background: var(--button-bg);
+    color: var(--pink);
+    font-size: 1.05rem;
+    white-space: nowrap;
+}
+
+.spark-regenerate-button svg {
+    flex: 0 0 auto;
+    width: 1em;
+    height: 1em;
+    overflow: visible;
+}
+
+.spark-regenerate-button .spark-plus-icon {
+    stroke: currentColor;
+    stroke-width: 0.65;
+}
+
+.spark-regenerate-button .spark-lock-icon {
+    width: 1.08em;
+    height: 1.08em;
 }
 
 .spark-regenerate-button:disabled,
@@ -765,12 +824,6 @@ h1 {
 }
 
 .spark-regenerate-button.is-generating:disabled {
-    --spark-gradient-angle: 470deg;
-
-    background-position:
-        center,
-        100% 50%;
-    box-shadow: var(--spark-hover-shadow);
     opacity: 1;
 }
 
@@ -814,10 +867,66 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     background: linear-gradient(135deg, var(--orange), var(--yellow));
 }
 
+.spark-regenerate-dots span {
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+}
+
 .spark-error {
-    margin: 0 0 18px;
-    color: var(--pink);
+    margin: 0;
+    color: var(--text);
     font-weight: 700;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.spark-error-message {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 12px 44px;
+    border: 1px solid var(--error-border);
+    border-radius: 14px;
+    background: var(--error-bg);
+    box-shadow: var(--error-shadow);
+}
+
+.spark-error-message svg {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    color: var(--pink);
+    font-size: 1.1rem;
+}
+
+.spark-error-message .spark-error {
+    text-align: center;
+}
+
+.spark-standalone-error {
+    min-height: 148px;
+    padding: 24px 52px;
+    border-radius: 24px;
+    animation: sparkIn 180ms ease both;
+}
+
+.spark-standalone-error svg {
+    left: 24px;
+}
+
+.spark-inline-error {
+    margin: 12px 0 0;
+    padding: 8px 36px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+}
+
+.spark-inline-error svg {
+    left: 10px;
+    font-size: 0.95rem;
 }
 
 .spark-content {
@@ -859,6 +968,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 .spark-question-skeleton {
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     gap: 12px;
     overflow: hidden;
@@ -893,6 +1003,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     font-size: clamp(1.1rem, 2.6vw, 1.55rem);
     font-weight: 650;
     line-height: 1.35;
+    text-align: center;
     text-wrap: balance;
 }
 
@@ -1181,8 +1292,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
         padding: 36px;
     }
 
-    .spark-header,
-    .spark-navigation {
+    .spark-header {
         flex-direction: column;
     }
 
