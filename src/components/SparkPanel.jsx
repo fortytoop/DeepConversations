@@ -135,13 +135,13 @@ export default function SparkPanel({ spark, sparkButtonPosition }) {
               title={generateButtonLabel}
             >
               {spark.loading ? (
-                <span
-                  className="spark-thinking-dots spark-regenerate-dots"
-                  aria-hidden="true"
-                >
-                  <span></span>
-                  <span></span>
-                  <span></span>
+                <span className="spark-regenerate-thinking" aria-hidden="true">
+                  <span className="spark-thinking-dots spark-regenerate-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </span>
+                  <span>Thinking</span>
                 </span>
               ) : spark.error ? (
                 <>

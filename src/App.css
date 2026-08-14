@@ -1228,12 +1228,6 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     gap: 7px;
 }
 
-.spark-regenerate-thinking .spark-thinking-dots span {
-    width: 5px;
-    height: 5px;
-    background: linear-gradient(135deg, var(--orange), var(--yellow));
-}
-
 .spark-regenerate-dots span {
     width: 5px;
     height: 5px;
