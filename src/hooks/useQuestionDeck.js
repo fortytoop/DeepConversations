@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import {
   CATEGORY_ANIMATION_MS,
   PRESS_FEEDBACK_MS,
@@ -7,12 +8,16 @@ import {
 } from "../constants";
 import { shuffleArray } from "../utils/shuffleArray";
 
+const REDUCED_MOTION_NAVIGATION_MS = 180;
+
 // Controls the question deck state for category navigation, card navigation,
 // card shuffling, and animation/transitions
 export function useQuestionDeck(allQuestions) {
-  const [cards, setCards] = useState(allQuestions); // Order either original or shuffled
+  const prefersReducedMotion = useReducedMotion();
+  const [shuffledCardsByCategory, setShuffledCardsByCategory] = useState(
+    () => new Map(),
+  );
   const [cardIndex, setCardIndex] = useState(0);
-  const [isShuffled, setIsShuffled] = useState(false);
   const [shufflePressed, setShufflePressed] = useState(false);
   const [pressedCardDirection, setPressedCardDirection] = useState(null);
   const [stackAnimation, setStackAnimation] = useState(null);
@@ -34,13 +39,23 @@ export function useQuestionDeck(allQuestions) {
 
   const category = categories[categoryIndex];
 
-  // Only show cards from active category, either original or shuffled order
-  const filteredCards = useMemo(
-    () => cards.filter((card) => card.category === category),
-    [cards, category],
+  const originalCategoryCards = useMemo(
+    () => allQuestions.filter((card) => card.category === category),
+    [allQuestions, category],
   );
 
+  // Each category keeps one fixed shuffled order until shuffle is turned off.
+  const filteredCards =
+    shuffledCardsByCategory.get(category) ?? originalCategoryCards;
+  const isShuffled = shuffledCardsByCategory.has(category);
+
   const currentCard = filteredCards[cardIndex];
+  const stackAnimationDuration = prefersReducedMotion
+    ? REDUCED_MOTION_NAVIGATION_MS
+    : STACK_ANIMATION_MS;
+  const categoryAnimationDuration = prefersReducedMotion
+    ? REDUCED_MOTION_NAVIGATION_MS
+    : CATEGORY_ANIMATION_MS;
 
   // Build the visible stack, wrapping around when at end
   const visibleCards = useMemo(() => {
@@ -69,7 +84,7 @@ export function useQuestionDeck(allQuestions) {
     setPressedCardDirection("down");
     setStackAnimation("down");
     setCardIndex((previousIndex) => (previousIndex + 1) % filteredCards.length);
-    setTimeout(clearCardPressFeedback, STACK_ANIMATION_MS);
+    setTimeout(clearCardPressFeedback, stackAnimationDuration);
   }
 
   function goToPreviousCard() {
@@ -83,7 +98,7 @@ export function useQuestionDeck(allQuestions) {
     setCardIndex((previousIndex) =>
       previousIndex === 0 ? filteredCards.length - 1 : previousIndex - 1,
     );
-    setTimeout(clearCardPressFeedback, STACK_ANIMATION_MS);
+    setTimeout(clearCardPressFeedback, stackAnimationDuration);
   }
 
   function startCategoryTransition(direction, getNextIndex) {
@@ -103,7 +118,7 @@ export function useQuestionDeck(allQuestions) {
       setPreviousCategoryCards([]);
       setPreviousCategoryCardNumber(null);
       setCategoryAnimation(null);
-    }, CATEGORY_ANIMATION_MS);
+    }, categoryAnimationDuration);
   }
 
   function goToNextCategory() {
@@ -125,40 +140,35 @@ export function useQuestionDeck(allQuestions) {
     const currentCardId = currentCard.id;
 
     if (isShuffled) {
-      const originalCategoryCards = allQuestions.filter(
-        (card) => card.category === category,
-      );
       const originalIndex = originalCategoryCards.findIndex(
         (card) => card.id === currentCardId,
       );
 
       // When unshuffling, restore the original order and keep current card
-      setCards(allQuestions);
+      setShuffledCardsByCategory((previousOrders) => {
+        const updatedOrders = new Map(previousOrders);
+        updatedOrders.delete(category);
+        return updatedOrders;
+      });
       setCardIndex(Math.max(originalIndex, 0));
-      setIsShuffled(false);
       return;
     }
 
-    const currentCategoryCards = allQuestions.filter(
-      (card) => card.category === category,
-    );
-    const currentCategoryCardIds = new Set(
-      currentCategoryCards.map((card) => card.id),
-    );
-    const current = currentCategoryCards.find(
+    const current = originalCategoryCards.find(
       (card) => card.id === currentCardId,
     );
-    const remaining = currentCategoryCards.filter(
+    const remaining = originalCategoryCards.filter(
       (card) => card.id !== currentCardId,
     );
-    const otherCards = allQuestions.filter(
-      (card) => !currentCategoryCardIds.has(card.id),
-    );
 
-    // When shuffling, shuffle all next and previous cards but keep the current card
-    setCards([...otherCards, current, ...shuffleArray(remaining)]);
+    // Keep the current card first, then visit every other card exactly once
+    // before the navigation wraps back to the start of this fixed order.
+    setShuffledCardsByCategory((previousOrders) => {
+      const updatedOrders = new Map(previousOrders);
+      updatedOrders.set(category, [current, ...shuffleArray(remaining)]);
+      return updatedOrders;
+    });
     setCardIndex(0);
-    setIsShuffled(true);
   }
 
   function handleShuffleClick() {
@@ -170,7 +180,9 @@ export function useQuestionDeck(allQuestions) {
   return {
     cardNumber,
     category,
+    categoryCount: categories.length,
     categoryAnimation,
+    categoryNumber: categoryIndex + 1,
     currentCard,
     goToNextCard,
     goToNextCategory,
@@ -179,6 +191,9 @@ export function useQuestionDeck(allQuestions) {
     handleShuffleClick,
     isShuffled,
     previousCategory,
+    previousCategoryNumber: previousCategory
+      ? categories.indexOf(previousCategory) + 1
+      : null,
     previousCategoryCardNumber,
     previousCategoryCards,
     pressedCardDirection,

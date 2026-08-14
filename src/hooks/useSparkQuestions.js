@@ -1,5 +1,10 @@
 import { useRef, useState } from "react";
-import { SPARK_CLOSE_ANIMATION_MS } from "../constants";
+import { useReducedMotion } from "framer-motion";
+import {
+  PRESS_FEEDBACK_MS,
+  SPARK_CLOSE_ANIMATION_MS,
+  SPARK_QUESTION_ANIMATION_MS,
+} from "../constants";
 import { readSparkCache, writeSparkCache } from "../utils/sparkCache";
 import { parseSparkResponse } from "../utils/sparkData";
 
@@ -7,6 +12,7 @@ import { parseSparkResponse } from "../utils/sparkData";
 const SIMULATE_SPARK_AI_FAILURE =
   import.meta.env.DEV &&
   import.meta.env.VITE_SIMULATE_SPARK_AI_FAILURE === "true";
+const REDUCED_MOTION_PRESS_FEEDBACK_MS = 180;
 
 function parseRateLimitError(data) {
   if (typeof data?.error !== "string") return "";
@@ -29,12 +35,17 @@ class SparkApiError extends Error {
 // Controls the Spark panel, including opening/closing, loading,
 // generated questions, pagination, and backend generation limits
 export function useSparkQuestions(currentCard) {
+  const prefersReducedMotion = useReducedMotion();
   const requestInProgressRef = useRef(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   const [questions, setQuestions] = useState([]);
   const [questionIndex, setQuestionIndex] = useState(0);
+  const [previousQuestionIndex, setPreviousQuestionIndex] = useState(null);
+  const [questionAnimation, setQuestionAnimation] = useState(null);
+  const [pressedQuestionDirection, setPressedQuestionDirection] =
+    useState(null);
 
   // These come from the backend
   const [remainingGenerations, setRemainingGenerations] = useState(0);
@@ -48,6 +59,9 @@ export function useSparkQuestions(currentCard) {
   const hasReachedGenerationLimit =
     maxTotalQuestions !== null && remainingGenerations <= 0;
   const canGenerateMoreQuestions = !hasReachedGenerationLimit;
+  const pressFeedbackDuration = prefersReducedMotion
+    ? REDUCED_MOTION_PRESS_FEEDBACK_MS
+    : PRESS_FEEDBACK_MS;
 
   // Generate Spark questions for the current card
   // When replace is true, start a fresh Spark session instead of appending questions
@@ -118,6 +132,9 @@ export function useSparkQuestions(currentCard) {
 
       setQuestions(updatedQuestions);
       setQuestionIndex(insertionIndex);
+      setPreviousQuestionIndex(null);
+      setQuestionAnimation(null);
+      setPressedQuestionDirection(null);
       setRemainingGenerations(parsedData.remainingGenerations);
       setMaxTotalQuestions(parsedData.maxTotalQuestions);
       writeSparkCache(currentCard, {
@@ -150,6 +167,9 @@ export function useSparkQuestions(currentCard) {
       setIsClosing(false);
       setQuestions([]);
       setQuestionIndex(0);
+      setPreviousQuestionIndex(null);
+      setQuestionAnimation(null);
+      setPressedQuestionDirection(null);
       setLoading(false);
       setError("");
       setRemainingGenerations(0);
@@ -177,6 +197,9 @@ export function useSparkQuestions(currentCard) {
     if (cachedSpark) {
       setQuestions(cachedSpark.questions);
       setQuestionIndex(0);
+      setPreviousQuestionIndex(null);
+      setQuestionAnimation(null);
+      setPressedQuestionDirection(null);
       setRemainingGenerations(cachedSpark.remainingGenerations);
       setMaxTotalQuestions(cachedSpark.maxTotalQuestions);
       return;
@@ -186,13 +209,39 @@ export function useSparkQuestions(currentCard) {
   }
 
   function goToPreviousQuestion() {
-    setQuestionIndex((previousIndex) => Math.max(previousIndex - 1, 0));
+    if (questionAnimation || questionIndex === 0) return;
+
+    setPreviousQuestionIndex(questionIndex);
+    setQuestionAnimation("previous");
+    setPressedQuestionDirection("left");
+    setQuestionIndex(questionIndex - 1);
+
+    setTimeout(() => {
+      setPressedQuestionDirection(null);
+    }, pressFeedbackDuration);
+
+    setTimeout(() => {
+      setPreviousQuestionIndex(null);
+      setQuestionAnimation(null);
+    }, SPARK_QUESTION_ANIMATION_MS);
   }
 
   function goToNextQuestion() {
-    setQuestionIndex((previousIndex) =>
-      Math.min(previousIndex + 1, questions.length - 1),
-    );
+    if (questionAnimation || questionIndex >= questions.length - 1) return;
+
+    setPreviousQuestionIndex(questionIndex);
+    setQuestionAnimation("next");
+    setPressedQuestionDirection("right");
+    setQuestionIndex(questionIndex + 1);
+
+    setTimeout(() => {
+      setPressedQuestionDirection(null);
+    }, pressFeedbackDuration);
+
+    setTimeout(() => {
+      setPreviousQuestionIndex(null);
+      setQuestionAnimation(null);
+    }, SPARK_QUESTION_ANIMATION_MS);
   }
 
   return {
@@ -207,6 +256,9 @@ export function useSparkQuestions(currentCard) {
     isOpen,
     loading,
     maxTotalQuestions,
+    pressedQuestionDirection,
+    previousQuestionIndex,
+    questionAnimation,
     questionIndex,
     questions,
     remainingGenerations,

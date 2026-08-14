@@ -22,9 +22,9 @@ export default function PageNotFound({ theme }) {
       <main className="not-found-page">
         <section className="not-found-card" aria-labelledby="not-found-title">
           <p className="error-code">404 - Page not found</p>
-          <h2 className="not-found-title" id="not-found-title">
+          <h1 className="not-found-title" id="not-found-title">
             Lost the conversation?
-          </h2>
+          </h1>
           <p className="not-found-message">
             We couldn’t find the page you’re looking for. It may have moved, or
             the address might be wrong.

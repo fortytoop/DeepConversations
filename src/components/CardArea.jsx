@@ -1,4 +1,5 @@
 import { BsStars, BsX } from "react-icons/bs";
+import { SPARK_PANEL_ID } from "../constants";
 import CardNavigation from "./CardNavigation";
 import CardStack from "./CardStack";
 
@@ -18,7 +19,10 @@ export default function CardArea({
   onShuffleClick,
   onSparkClick,
 }) {
-  const sparkButtonLabel = isSparkOpen
+  const sparkButtonAccessibleLabel = isSparkOpen
+    ? "Close follow-up questions"
+    : "Show follow-up questions";
+  const sparkButtonTooltip = isSparkOpen
     ? "Close"
     : "Show follow-up questions";
 
@@ -63,9 +67,10 @@ export default function CardArea({
           className="ai-button"
           type="button"
           onClick={onSparkClick}
-          aria-label={sparkButtonLabel}
-          title={sparkButtonLabel}
+          aria-label={sparkButtonAccessibleLabel}
+          title={sparkButtonTooltip}
           aria-expanded={isSparkOpen}
+          aria-controls={SPARK_PANEL_ID}
         >
           {isSparkOpen ? (
             <BsX className="spark-gradient-icon" />

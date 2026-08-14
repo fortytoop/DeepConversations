@@ -10,9 +10,10 @@ export default function Footer() {
           href="https://prateepkasinathan.com"
           target="_blank"
           rel="noopener noreferrer"
-          title="Visit author’s website"
+          title="Visit author’s website (opens in a new tab)"
         >
           Prateep Kasinathan
+          <span className="visually-hidden"> (opens in a new tab)</span>
         </a>
       </p>
     </footer>

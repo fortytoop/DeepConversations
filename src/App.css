@@ -6,10 +6,124 @@
     initial-value: 110deg;
 }
 
+@property --theme-button-surface-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ffffff;
+}
+
+@property --theme-button-text-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #1f2937;
+}
+
+@property --theme-button-accent-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #be185d;
+}
+
+@property --theme-button-active-foreground-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ffffff;
+}
+
+@property --theme-category-dot-ring-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: rgba(190, 24, 93, 0.14);
+}
+
+@property --text {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #1f2937;
+}
+
+@property --muted {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #646b78;
+}
+
+@property --muted-light {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #646b78;
+}
+
+@property --pink {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #be185d;
+}
+
+@property --pink-dark {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #831843;
+}
+
+@property --purple {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #8b5cf6;
+}
+
+@property --blue {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #4285f4;
+}
+
+@property --spark-pink {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ec4899;
+}
+
+@property --orange {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #f97316;
+}
+
+@property --yellow {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #facc15;
+}
+
+@property --question-text {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #374151;
+}
+
+@property --spark-button-start-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #ec4899;
+}
+
+@property --spark-button-middle-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #f97316;
+}
+
+@property --spark-button-end-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #facc15;
+}
+
 :root {
     --text: #1f2937;
-    --muted: #6b7280;
-    --muted-light: #9ca3af;
+    --muted: #646b78;
+    --muted-light: #646b78;
     --pink: #be185d;
     --pink-dark: #831843;
     --purple: #8b5cf6;
@@ -17,6 +131,20 @@
     --spark-pink: #ec4899;
     --orange: #f97316;
     --yellow: #facc15;
+    --theme-button-surface-color: #ffffff;
+    --theme-button-text-color: #1f2937;
+    --theme-button-accent-color: #be185d;
+    --theme-button-active-foreground-color: #ffffff;
+    --theme-category-dot-ring-color: rgba(190, 24, 93, 0.14);
+    --spark-button-start-color: #ec4899;
+    --spark-button-middle-color: #f97316;
+    --spark-button-end-color: #facc15;
+    --spark-button-spectrum: linear-gradient(
+        var(--spark-gradient-angle),
+        var(--spark-button-start-color) 0%,
+        var(--spark-button-middle-color) 50%,
+        var(--spark-button-end-color) 100%
+    );
     --spark-spectrum: linear-gradient(
         var(--spark-gradient-angle),
         var(--spark-pink) 0%,
@@ -44,7 +172,7 @@
     --error-bg: rgba(190, 24, 93, 0.08);
     --error-border: rgba(190, 24, 93, 0.38);
     --error-shadow: none;
-    --focus-ring: rgba(190, 24, 93, 0.35);
+    --focus-ring: #be185d;
     --active-foreground: #ffffff;
     --spark-outline: rgba(139, 92, 246, 0.1);
     --skeleton-edge: rgba(139, 92, 246, 0.08);
@@ -66,7 +194,7 @@
 :root[data-theme="dark"] {
     --text: #f4f0f7;
     --muted: #aaa2b4;
-    --muted-light: #938a9e;
+    --muted-light: #aaa2b4;
     --pink: #dea3bc;
     --pink-dark: #c97c9f;
     --purple: #a99bdd;
@@ -74,6 +202,14 @@
     --spark-pink: #dea3bc;
     --orange: #d89a80;
     --yellow: #ddc285;
+    --theme-button-surface-color: #292233;
+    --theme-button-text-color: #f4f0f7;
+    --theme-button-accent-color: #dea3bc;
+    --theme-button-active-foreground-color: #211c2b;
+    --theme-category-dot-ring-color: rgba(201, 124, 159, 0.18);
+    --spark-button-start-color: #dea3bc;
+    --spark-button-middle-color: #d89a80;
+    --spark-button-end-color: #ddc285;
     --page-background: linear-gradient(135deg, #0f0d16, #171225);
     --page-overlay: linear-gradient(
         135deg,
@@ -95,7 +231,7 @@
     --error-bg: rgba(201, 124, 159, 0.2);
     --error-border: rgba(222, 163, 188, 0.72);
     --error-shadow: 0 0 18px rgba(201, 124, 159, 0.14);
-    --focus-ring: rgba(169, 155, 221, 0.52);
+    --focus-ring: #a99bdd;
     --active-foreground: #211c2b;
     --spark-outline: rgba(169, 155, 221, 0.2);
     --skeleton-edge: rgba(169, 155, 221, 0.1);
@@ -118,6 +254,89 @@
     box-sizing: border-box;
 }
 
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+:root.theme-transitioning {
+    transition-property:
+        --theme-button-surface-color,
+        --theme-button-text-color,
+        --theme-button-accent-color,
+        --theme-button-active-foreground-color,
+        --theme-category-dot-ring-color,
+        --text,
+        --muted,
+        --muted-light,
+        --pink,
+        --pink-dark,
+        --purple,
+        --blue,
+        --spark-pink,
+        --orange,
+        --yellow,
+        --question-text,
+        --spark-button-start-color,
+        --spark-button-middle-color,
+        --spark-button-end-color,
+        background-color,
+        border-color,
+        box-shadow,
+        outline-color,
+        text-decoration-color,
+        backdrop-filter,
+        -webkit-backdrop-filter;
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root.theme-transitioning *,
+:root.theme-transitioning *::before,
+:root.theme-transitioning *::after {
+    transition-property:
+        background-color,
+        border-color,
+        box-shadow,
+        outline-color,
+        text-decoration-color,
+        backdrop-filter,
+        -webkit-backdrop-filter;
+    transition-duration: 450ms;
+    transition-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root.theme-transitioning .vanta-theme-overlay,
+:root.theme-transitioning .reduced-background-layer {
+    transition-property: opacity;
+}
+
+:root.theme-transitioning button,
+:root.theme-transitioning .category-pill {
+    transition-property:
+        box-shadow,
+        outline-color;
+}
+
+:root.theme-transitioning .category-progress-dot {
+    transition-property: none;
+}
+
+:root.theme-transition-cleanup,
+:root.theme-transition-cleanup *,
+:root.theme-transition-cleanup *::before,
+:root.theme-transition-cleanup *::after {
+    transition: none !important;
+}
+
 body {
     position: relative;
     min-height: 100vh;
@@ -126,17 +345,15 @@ body {
     color: var(--text);
     font-family: Inter, system-ui, sans-serif;
     background: var(--browser-background);
-    transition:
-        color 0.25s ease,
-        background 0.25s ease;
+    transition: background 0.25s ease;
 }
 
 button {
     border: 0;
     border-radius: 999px;
     padding: 12px 18px;
-    background: var(--button-bg);
-    color: var(--text);
+    background: var(--theme-button-surface-color);
+    color: var(--theme-button-text-color);
     box-shadow: var(--button-shadow);
     cursor: pointer;
     font: inherit;
@@ -176,13 +393,48 @@ a:focus-visible {
     background: var(--page-background);
 }
 
-.vanta-background::after {
+.vanta-theme-overlay,
+.reduced-background-layer {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    content: "";
-    background: var(--page-overlay);
-    transition: background 0.25s ease;
+}
+
+.vanta-theme-overlay {
+    z-index: 1;
+    transition: opacity 450ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.vanta-theme-overlay-light {
+    background: linear-gradient(
+        135deg,
+        rgba(253, 242, 248, 0.32),
+        rgba(238, 242, 255, 0.38)
+    );
+    opacity: 1;
+}
+
+.vanta-theme-overlay-dark {
+    background: linear-gradient(
+        135deg,
+        rgba(15, 13, 22, 0.48),
+        rgba(23, 18, 37, 0.58)
+    );
+    opacity: 0;
+}
+
+:root[data-theme="dark"] .vanta-theme-overlay-light {
+    opacity: 0;
+}
+
+:root[data-theme="dark"] .vanta-theme-overlay-dark {
+    opacity: 1;
+}
+
+.reduced-background-layer {
+    z-index: 0;
+    display: none;
+    pointer-events: none;
 }
 
 .theme-toggle {
@@ -195,8 +447,15 @@ a:focus-visible {
     height: 48px;
     padding: 0;
     place-items: center;
-    color: var(--pink);
+    color: var(--theme-button-accent-color);
     font-size: 1.15rem;
+}
+
+.theme-toggle-icon {
+    grid-area: 1 / 1;
+    width: 1.25em;
+    height: 1.25em;
+    overflow: visible;
 }
 
 .app {
@@ -345,10 +604,12 @@ h1 {
 
 /* Category controls */
 .controls {
-    display: flex;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 620px) 48px;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    width: 100%;
     margin-bottom: 18px;
 }
 
@@ -369,26 +630,66 @@ h1 {
 
 .category-pill-wrapper {
     position: relative;
-    width: min(620px, 74vw);
-    height: 64px;
+    display: grid;
+    width: 100%;
+    min-width: 0;
+    min-height: 64px;
     overflow: hidden;
     border-radius: 999px;
 }
 
 .category-pill {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 28px;
+    width: 100%;
+    min-width: 0;
+    min-height: 64px;
+    margin: 0;
+    padding: 8px 28px 18px;
     border-radius: 999px;
-    background: var(--button-bg);
+    background: var(--theme-button-surface-color);
     box-shadow: var(--button-shadow);
-    color: var(--pink);
+    color: var(--theme-button-accent-color);
+    font-size: inherit;
     font-weight: 800;
     line-height: 1.15;
     text-align: center;
+}
+
+.category-pill-label {
+    overflow-wrap: anywhere;
+    transform: translateY(-5px);
+}
+
+.category-progress {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transform: translateX(-50%);
+}
+
+.category-progress-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted-light);
+    opacity: 0.4;
+    transition:
+        background-color 180ms ease,
+        box-shadow 180ms ease,
+        opacity 180ms ease;
+}
+
+.category-progress-dot.active {
+    background: var(--theme-button-accent-color);
+    box-shadow: 0 0 0 3px var(--theme-category-dot-ring-color);
+    opacity: 1;
 }
 
 .category-pill-old,
@@ -417,9 +718,11 @@ h1 {
 .category-arrow.pressed-left,
 .category-arrow.pressed-right,
 .card-nav-buttons button.pressed-up,
-.card-nav-buttons button.pressed-down {
-    background: var(--pink);
-    color: var(--active-foreground);
+.card-nav-buttons button.pressed-down,
+.spark-navigation button.pressed-left,
+.spark-navigation button.pressed-right {
+    background: var(--theme-button-accent-color);
+    color: var(--theme-button-active-foreground-color);
     box-shadow: var(--active-shadow);
 }
 
@@ -428,6 +731,14 @@ h1 {
 }
 
 .category-arrow.pressed-right {
+    transform: translateX(6px) scale(0.92);
+}
+
+.spark-navigation button.pressed-left {
+    transform: translateX(-6px) scale(0.92);
+}
+
+.spark-navigation button.pressed-right {
     transform: translateX(6px) scale(0.92);
 }
 
@@ -456,15 +767,19 @@ h1 {
 }
 
 .shuffle-button.active {
-    color: var(--active-foreground);
+    color: var(--theme-button-active-foreground-color);
 }
 
 .ai-button,
 .spark-regenerate-button {
     border: 2px solid transparent;
     background:
-        linear-gradient(var(--button-bg), var(--button-bg)) padding-box,
-        var(--spark-spectrum) border-box;
+        linear-gradient(
+                var(--theme-button-surface-color),
+                var(--theme-button-surface-color)
+            )
+            padding-box,
+        var(--spark-button-spectrum) border-box;
     background-position:
         center,
         0% 50%;
@@ -486,7 +801,7 @@ h1 {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    color: var(--text);
+    color: var(--theme-button-text-color);
 }
 
 .ai-button::before {
@@ -496,7 +811,7 @@ h1 {
     border-radius: inherit;
     pointer-events: none;
     content: "";
-    background: var(--spark-spectrum);
+    background: var(--spark-button-spectrum);
     opacity: 0;
     transition: opacity 0.12s ease;
 }
@@ -522,36 +837,36 @@ h1 {
 }
 
 .spark-icon-stop-start {
-    stop-color: var(--spark-pink);
+    stop-color: var(--spark-button-start-color);
 }
 
 .spark-icon-stop-middle {
-    stop-color: var(--orange);
+    stop-color: var(--spark-button-middle-color);
 }
 
 .spark-icon-stop-end {
-    stop-color: var(--yellow);
+    stop-color: var(--spark-button-end-color);
 }
 
 .card-area:has(
         .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-start {
-    stop-color: var(--spark-pink);
+    stop-color: var(--spark-button-start-color);
 }
 
 .card-area:has(
         .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-middle {
-    stop-color: var(--orange);
+    stop-color: var(--spark-button-middle-color);
 }
 
 .card-area:has(
         .ai-button:is(:focus-visible, [aria-expanded="true"])
     )
     .spark-icon-stop-end {
-    stop-color: var(--yellow);
+    stop-color: var(--spark-button-end-color);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -565,15 +880,15 @@ h1 {
     }
 
     .card-area:has(.ai-button:hover) .spark-icon-stop-start {
-        stop-color: var(--spark-pink);
+        stop-color: var(--spark-button-start-color);
     }
 
     .card-area:has(.ai-button:hover) .spark-icon-stop-middle {
-        stop-color: var(--orange);
+        stop-color: var(--spark-button-middle-color);
     }
 
     .card-area:has(.ai-button:hover) .spark-icon-stop-end {
-        stop-color: var(--yellow);
+        stop-color: var(--spark-button-end-color);
     }
 }
 
@@ -590,7 +905,7 @@ h1 {
 }
 
 .card-area:has(.ai-button[aria-expanded="true"]) .spark-icon-stop {
-    stop-color: var(--button-bg);
+    stop-color: var(--theme-button-surface-color);
 }
 
 .shuffle-button {
@@ -602,7 +917,7 @@ h1 {
 }
 
 .shuffle-button.active {
-    background: var(--pink);
+    background: var(--theme-button-accent-color);
     transform: scale(1.12);
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
 }
@@ -626,7 +941,9 @@ h1 {
 /* Card stack */
 .card-stack {
     position: relative;
+    display: grid;
     min-height: 420px;
+    padding-bottom: 52px;
 }
 
 .card {
@@ -634,14 +951,15 @@ h1 {
     --card-scale: max(0.84, calc(1 - (var(--card-index) * 0.04)));
     --card-opacity: max(0.2, calc(1 - (var(--card-index) * 0.3)));
 
-    position: absolute;
-    inset: 0;
+    position: relative;
+    grid-area: 1 / 1;
     z-index: calc(var(--card-count) - var(--card-index));
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 380px;
-    padding: 52px;
+    min-width: 0;
+    min-height: 380px;
+    padding: 52px 52px 70px;
     border: 1px solid var(--surface-border);
     border-radius: 32px;
     background: var(--card-bg);
@@ -698,19 +1016,20 @@ h1 {
 }
 
 .question-container {
-    position: absolute;
-    inset: 40px 40px 70px;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    min-width: 0;
 }
 
-.card h3 {
+.card-question {
     max-width: 620px;
     margin: 0;
     font-size: clamp(1.45rem, 2.8vw, 2.35rem);
     font-weight: 600;
     line-height: 1.2;
+    overflow-wrap: anywhere;
     text-wrap: balance;
 }
 
@@ -730,7 +1049,27 @@ h1 {
 }
 
 /* Spark panel */
+.spark-panel-slot {
+    display: grid;
+    grid-template-rows: 0fr;
+}
+
+.spark-panel-slot-inner {
+    min-height: 0;
+}
+
+.spark-panel-slot.opening {
+    animation: sparkPanelSlotOpen 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.spark-panel-slot.closing {
+    animation: sparkPanelSlotClose 200ms ease-in both;
+}
+
 .spark-card {
+    --spark-origin-x: 50%;
+    --spark-origin-y: 0px;
+
     width: min(620px, 100%);
     margin: 60px auto 0;
     padding: 20px;
@@ -739,15 +1078,20 @@ h1 {
     background: var(--panel-bg);
     backdrop-filter: blur(16px);
     box-shadow: var(--panel-shadow);
-    transform-origin: top center;
+    transform-origin: var(--spark-origin-x) var(--spark-origin-y);
+    will-change: transform, opacity;
 }
 
 .spark-card.opening {
-    animation: sparkOpen 220ms ease both;
+    animation: sparkOpen 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.spark-card.preparing {
+    opacity: 0;
 }
 
 .spark-card.closing {
-    animation: sparkClose 180ms ease both;
+    animation: sparkClose 180ms ease-in both;
 }
 
 .spark-header {
@@ -792,10 +1136,10 @@ h1 {
     width: 180px;
     height: 44px;
     padding: 0 16px;
-    border: 2px solid var(--pink);
+    border: 2px solid var(--theme-button-accent-color);
     border-radius: 14px;
-    background: var(--button-bg);
-    color: var(--pink);
+    background: var(--theme-button-surface-color);
+    color: var(--theme-button-accent-color);
     font-size: 1.05rem;
     white-space: nowrap;
 }
@@ -820,10 +1164,33 @@ h1 {
 .spark-regenerate-button:disabled,
 .spark-navigation button:disabled {
     cursor: not-allowed;
+}
+
+.spark-regenerate-button:disabled {
     opacity: 0.45;
 }
 
+.spark-navigation button svg {
+    transition: opacity 0.18s ease;
+}
+
+.spark-navigation button:disabled {
+    box-shadow: none;
+}
+
+.spark-navigation button:disabled svg {
+    opacity: 0.4;
+}
+
 .spark-regenerate-button.is-generating:disabled {
+    opacity: 1;
+}
+
+.spark-navigation button:is(.pressed-left, .pressed-right):disabled {
+    box-shadow: var(--active-shadow);
+}
+
+.spark-navigation button:is(.pressed-left, .pressed-right):disabled svg {
     opacity: 1;
 }
 
@@ -891,6 +1258,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     border-radius: 14px;
     background: var(--error-bg);
     box-shadow: var(--error-shadow);
+    animation: sparkErrorShake 440ms ease-out both;
 }
 
 .spark-error-message svg {
@@ -910,7 +1278,6 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     min-height: 148px;
     padding: 24px 52px;
     border-radius: 24px;
-    animation: sparkIn 180ms ease both;
 }
 
 .spark-standalone-error svg {
@@ -957,12 +1324,46 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 
 .spark-question-card {
     position: relative;
+    display: grid;
     min-height: 148px;
     padding: 24px 24px 48px;
     border-radius: 24px;
     background: var(--question-bg);
     box-shadow: inset 0 0 0 1px var(--spark-outline);
-    animation: sparkIn 180ms ease both;
+    place-items: center;
+}
+
+.spark-question-stage {
+    display: grid;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.spark-question-stage .spark-question-card {
+    grid-area: 1 / 1;
+    visibility: hidden;
+}
+
+.spark-question-stage .spark-question-current,
+.spark-question-stage .spark-question-outgoing {
+    z-index: 1;
+    visibility: visible;
+}
+
+.spark-question-transition-next .spark-question-outgoing {
+    animation: sparkQuestionOutLeft 220ms ease both;
+}
+
+.spark-question-transition-next .spark-question-current {
+    animation: sparkQuestionInRight 220ms ease both;
+}
+
+.spark-question-transition-previous .spark-question-outgoing {
+    animation: sparkQuestionOutRight 220ms ease both;
+}
+
+.spark-question-transition-previous .spark-question-current {
+    animation: sparkQuestionInLeft 220ms ease both;
 }
 
 .spark-question-skeleton {
@@ -1037,6 +1438,26 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 }
 
 /* Animations */
+@keyframes sparkPanelSlotOpen {
+    from {
+        grid-template-rows: 0fr;
+    }
+
+    to {
+        grid-template-rows: 1fr;
+    }
+}
+
+@keyframes sparkPanelSlotClose {
+    from {
+        grid-template-rows: 1fr;
+    }
+
+    to {
+        grid-template-rows: 0fr;
+    }
+}
+
 @keyframes pillOutLeft {
     from {
         transform: translateX(0);
@@ -1143,24 +1564,24 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 
 @keyframes sparkOpen {
     from {
-        transform: translateY(-14px) scale(0.96);
+        transform: scale(0.12);
         opacity: 0;
     }
 
     to {
-        transform: translateY(0) scale(1);
+        transform: scale(1);
         opacity: 1;
     }
 }
 
 @keyframes sparkClose {
     from {
-        transform: translateY(0) scale(1);
+        transform: scale(1);
         opacity: 1;
     }
 
     to {
-        transform: translateY(-14px) scale(0.96);
+        transform: scale(0.12);
         opacity: 0;
     }
 }
@@ -1174,6 +1595,81 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     to {
         transform: translateY(0);
         opacity: 1;
+    }
+}
+
+@keyframes sparkQuestionOutLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-32px);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkQuestionInRight {
+    from {
+        transform: translateX(32px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes sparkQuestionOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(32px);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkQuestionInLeft {
+    from {
+        transform: translateX(-32px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes sparkErrorShake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    18% {
+        transform: translateX(-10px);
+    }
+
+    36% {
+        transform: translateX(8px);
+    }
+
+    54% {
+        transform: translateX(-6px);
+    }
+
+    72% {
+        transform: translateX(4px);
+    }
+
+    88% {
+        transform: translateX(-2px);
     }
 }
 
@@ -1212,29 +1708,46 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
         height: calc(100lvh + 192px);
     }
 
-    .vanta-background::after {
-        background: linear-gradient(
-            to bottom,
-            var(--browser-background) 0,
-            var(--browser-background) 96px,
-            var(--browser-background-transparent) 200px
-        );
+    .vanta-theme-overlay-light {
+        background:
+            linear-gradient(
+                to bottom,
+                #f7eff8 0,
+                #f7eff8 96px,
+                rgba(247, 239, 248, 0) 200px
+            ),
+            linear-gradient(
+                to top,
+                #f7eff8 0,
+                #f7eff8 96px,
+                rgba(247, 239, 248, 0) 216px
+            ),
+            linear-gradient(
+                135deg,
+                rgba(253, 242, 248, 0.32),
+                rgba(238, 242, 255, 0.38)
+            );
     }
 
-    #root::after {
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 0;
-        height: calc(120px + env(safe-area-inset-bottom));
-        pointer-events: none;
-        content: "";
-        background: linear-gradient(
-            to bottom,
-            var(--browser-background-transparent),
-            var(--browser-background)
-        );
+    .vanta-theme-overlay-dark {
+        background:
+            linear-gradient(
+                to bottom,
+                #0f0d16 0,
+                #0f0d16 96px,
+                rgba(15, 13, 22, 0) 200px
+            ),
+            linear-gradient(
+                to top,
+                #0f0d16 0,
+                #0f0d16 96px,
+                rgba(15, 13, 22, 0) 216px
+            ),
+            linear-gradient(
+                135deg,
+                rgba(15, 13, 22, 0.48),
+                rgba(23, 18, 37, 0.58)
+            );
     }
 
     .app {
@@ -1289,7 +1802,7 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     }
 
     .card {
-        padding: 36px;
+        padding: 36px 36px 64px;
     }
 
     .spark-header {
@@ -1301,29 +1814,260 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
     }
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .ai-button,
-    .spark-regenerate-button,
-    .home-button {
-        transition: none;
+@keyframes reducedFadeIn {
+    from {
+        opacity: 0;
     }
 
-    .spark-thinking-dots span {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes reducedFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .vanta-background {
+        background: transparent;
+    }
+
+    .vanta-theme-overlay {
+        display: none;
+    }
+
+    .reduced-background-layer {
+        display: block;
+        transition: opacity 450ms cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .reduced-background-light {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(253, 242, 248, 0.32),
+                rgba(238, 242, 255, 0.38)
+            ),
+            linear-gradient(135deg, #fdf2f8, #eef2ff);
+        opacity: 1;
+    }
+
+    .reduced-background-dark {
+        background:
+            linear-gradient(
+                135deg,
+                rgba(15, 13, 22, 0.48),
+                rgba(23, 18, 37, 0.58)
+            ),
+            linear-gradient(135deg, #0f0d16, #171225);
+        opacity: 0;
+    }
+
+    :root[data-theme="dark"] .reduced-background-light {
+        opacity: 0;
+    }
+
+    :root[data-theme="dark"] .reduced-background-dark {
+        opacity: 1;
+    }
+
+    button,
+    .home-button,
+    .subtitle a,
+    .footer a {
+        transition:
+            background 120ms ease,
+            color 120ms ease,
+            box-shadow 120ms ease,
+            opacity 120ms ease;
+    }
+
+    .ai-button,
+    .spark-regenerate-button {
+        transition:
+            color 120ms ease,
+            box-shadow 120ms ease,
+            opacity 120ms ease;
+    }
+
+    .category-arrow,
+    .card-nav-buttons button,
+    .spark-navigation button {
+        transition:
+            background 180ms ease,
+            color 180ms ease,
+            box-shadow 180ms ease,
+            opacity 180ms ease;
+    }
+
+    button:hover:not(:disabled):not(.pressed-left):not(.pressed-right):not(
+            .pressed-up
+        ):not(.pressed-down),
+    .home-button:hover,
+    .home-button:focus-visible,
+    .subtitle a:hover,
+    .subtitle a:focus-visible,
+    .footer a:hover,
+    .footer a:focus-visible,
+    .category-arrow.pressed-left,
+    .category-arrow.pressed-right,
+    .card-nav-buttons button.pressed-up,
+    .card-nav-buttons button.pressed-down,
+    .spark-navigation button.pressed-left,
+    .spark-navigation button.pressed-right,
+    .shuffle-button.active,
+    .shuffle-button.active:hover:not(:disabled) {
+        transform: none;
+    }
+
+    .shuffle-button svg,
+    .shuffle-button.active svg {
+        transform: none;
+        transition: opacity 120ms ease;
+    }
+
+    .category-pill-wrapper.next .category-pill-old,
+    .category-pill-wrapper.previous .category-pill-old {
+        visibility: hidden;
         animation: none;
     }
 
+    .category-pill-wrapper.next .category-pill-new,
+    .category-pill-wrapper.previous .category-pill-new {
+        animation: none;
+    }
+
+    .category-pill-new .category-pill-label {
+        animation: reducedFadeIn 180ms ease-out both;
+    }
+
+    .card {
+        transition: none;
+    }
+
+    .card-stack.stack-down .card,
+    .card-stack.stack-up .card,
+    .card-stack.stack-down .card-current,
+    .card-stack.stack-up .card-current {
+        transform: translateY(var(--card-y)) scale(var(--card-scale));
+        opacity: var(--card-opacity);
+    }
+
+    .card-stack.stack-down .card-current,
+    .card-stack.stack-up .card-current {
+        opacity: var(--card-opacity);
+    }
+
+    .card-stack.category-next .old-card,
+    .card-stack.category-previous .old-card {
+        visibility: hidden;
+        animation: none;
+    }
+
+    .card-stack.category-next .new-card,
+    .card-stack.category-previous .new-card {
+        animation: none;
+    }
+
+    .new-card.card-current .question-container,
+    .new-card.card-current .card-count {
+        animation: reducedFadeIn 180ms ease-out both;
+    }
+
+    .spark-panel-slot {
+        grid-template-rows: 1fr;
+    }
+
+    .spark-panel-slot.opening,
+    .spark-panel-slot.closing {
+        animation: none;
+    }
+
+    .spark-card.opening {
+        animation: reducedFadeIn 140ms ease-out both;
+    }
+
+    .spark-card.closing {
+        animation: reducedFadeOut 140ms ease-in both;
+    }
+
+    .spark-question-transition-next .spark-question-outgoing,
+    .spark-question-transition-previous .spark-question-outgoing {
+        animation: reducedFadeOut 140ms ease-out both;
+    }
+
+    .spark-question-transition-next .spark-question-current,
+    .spark-question-transition-previous .spark-question-current {
+        animation: reducedFadeIn 140ms ease-in both;
+    }
+
+    .spark-error-message {
+        animation: reducedFadeIn 140ms ease-out both;
+    }
+
+    .spark-thinking-dots span,
     .spark-question-skeleton-line {
         animation: none;
     }
 
-    .spark-gradient-text {
-        transition: none;
-    }
-
+    .spark-gradient-text,
     .spark-icon-stop {
         transition: none;
     }
+}
 
+@media (prefers-reduced-motion: reduce) and (hover: hover) and (pointer: fine) {
+    button:hover:not(:disabled):not(.pressed-left):not(.pressed-right):not(
+            .pressed-up
+        ):not(.pressed-down) {
+        box-shadow:
+            inset 0 0 0 2px var(--focus-ring),
+            var(--button-hover-shadow);
+    }
+
+    button:not(.ai-button):not(.active):hover:not(:disabled):not(
+            .pressed-left
+        ):not(.pressed-right):not(.pressed-up):not(.pressed-down) {
+        background: color-mix(
+            in srgb,
+            var(--theme-button-surface-color) 88%,
+            var(--theme-button-accent-color)
+        );
+        color: var(--theme-button-accent-color);
+    }
+
+    button.ai-button:hover:not(:disabled) {
+        box-shadow:
+            inset 0 0 0 2px var(--focus-ring),
+            var(--spark-hover-shadow);
+    }
+
+    button.ai-button:hover:not(:disabled):not([aria-expanded="true"]) {
+        --spark-gradient-angle: 110deg;
+
+        background-position:
+            center,
+            0% 50%;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .vanta-theme-overlay-light,
+    :root:not([data-theme]) .reduced-background-light {
+        opacity: 0;
+    }
+
+    :root:not([data-theme]) .vanta-theme-overlay-dark,
+    :root:not([data-theme]) .reduced-background-dark {
+        opacity: 1;
+    }
 }
 
 /* Footer */
@@ -1375,8 +2119,20 @@ button.spark-regenerate-button:hover:not(:disabled) .spark-gradient-text,
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .footer a,
+    .footer a {
+        transition:
+            background 120ms ease,
+            color 120ms ease,
+            box-shadow 120ms ease,
+            opacity 120ms ease;
+    }
+
+    .footer a:hover,
+    .footer a:focus-visible {
+        transform: none;
+    }
+
     .footer-separator {
-        transition: none;
+        transition: opacity 120ms ease;
     }
 }

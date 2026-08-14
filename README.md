@@ -10,13 +10,17 @@ DeepConversations is a flashcard-style web app for couples (and friends), design
 
 - React
 - Vite
+- Framer Motion
+- React Icons
+- Three.js and Vanta.js
 - CSS
 
 ### Backend
 
 - Python 3.11+
-- FastAPI
 - Uvicorn
+- FastAPI
+- SlowAPI
 - OpenAI API
 - NumPy
 
@@ -43,9 +47,9 @@ DeepConversations/
 
 Before you begin, make sure you have:
 
-- Node.js
+- Node.js 20.19+ or 22.12+
 - npm
-- Python 3.11 or later
+- Python 3.11+
 - An OpenAI API key
 
 ### 1. Clone the repository
@@ -53,7 +57,7 @@ Before you begin, make sure you have:
 ```bash
 git clone https://github.com/YOUR_USERNAME/DeepConversations.git
 cd DeepConversations
-````
+```
 
 ### 2. Set up the frontend
 
@@ -166,7 +170,14 @@ For Cloud Run, copy `deployment/cloud-run-env.example.yaml`, replace the placeho
 
 ### Frontend
 
-No frontend environment variables are required. During local development, Vite proxies `/api` requests to the backend at `http://localhost:8080`.
+No frontend environment variables are required. The following optional variables are available for local development and can be added to `.env.development.local`:
+
+| Variable                           | Required | Description                                                        |
+| ---------------------------------- | -------- | ------------------------------------------------------------------ |
+| `VITE_SIMULATE_SPARK_AI_FAILURE`   | No       | Set to `true` to simulate a failed Spark AI request                |
+| `VITE_ANIMATED_BACKGROUND_ENABLED` | No       | Set to `false` to disable the animated background during debugging |
+
+During local development, Vite proxies `/api` requests to the backend at `http://localhost:8080`.
 
 ## Data and Content Attribution
 
@@ -184,7 +195,7 @@ The SVG was adapted for use as the project's favicon. No endorsement by the crea
 
 ## License
 
-The original source code in this repository is licensed under the [MIT License](LICENSE).
+The original source code in this repository is licensed under the [MIT License](LICENSE.md).
 
 This license does not apply to third-party content included in or referenced by the project, including:
 
