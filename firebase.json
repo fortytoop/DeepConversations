@@ -11,8 +11,7 @@
         "source": "/api/**",
         "run": {
           "serviceId": "deepconversations-api",
-          "region": "europe-west1",
-          "pinTag": true
+          "region": "europe-west1"
         }
       },
       {
